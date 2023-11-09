@@ -1,0 +1,21 @@
+.option
+{
+    padding: $px5 0;
+}
+.option:selected
+{
+    background-color: $color-link-auth;
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .option
+        {
+            padding: $px5 * $scale 0;
+        }
+       
+    }
+
+}

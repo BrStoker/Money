@@ -1,0 +1,15 @@
+.image_change_label{
+    margin-left: $px10;
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .image_change_label{
+			margin-left: $px10 * $scale;
+		}
+       
+    }
+
+}

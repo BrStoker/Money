@@ -1,0 +1,62 @@
+.tost-wrapper
+{
+    display: fixed;
+    position: relative;
+    width: $px275;
+    height: $px50;
+    background: #c0e1d9;
+    color: #fff;
+    padding: $px5 $px25 $px5 $px5;
+    justify-content: center;
+    align-items: center;
+    line-height: $px14;
+    z-index: 299;
+    font-size: inherit;
+    margin-bottom: $px10;
+    overflow: hidden;
+}
+.tost-wrapper:nth-child(1),
+.tost-wrapper:nth-child(2),
+.tost-wrapper:nth-child(3),
+.tost-wrapper:nth-child(4),
+.tost-wrapper:nth-child(5)
+{
+    display: flex;
+}
+.tost-wrapper__type_error{
+    background:#edc0c0;
+}
+.tost-wrapper__display_none
+{
+    display: none;
+}
+.tost__button{
+    font-size: $px30;
+    position: absolute;
+    right: $px7;
+    top: $px13;
+    cursor: pointer;
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .tost-wrapper
+		{
+			width: $px275 * $scale;
+			height: $px50 * $scale;
+			padding: $px5 * $scale $px25 * $scale $px5 * $scale $px5 * $scale;
+			line-height: $px14 * $scale;
+			margin-bottom: $px10 * $scale;
+		}
+		
+		.tost__button{
+			font-size: $px30 * $scale;
+			right: $px7 * $scale;
+			top: $px13 * $scale;
+		}
+       
+    }
+
+}

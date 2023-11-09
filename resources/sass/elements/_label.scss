@@ -1,0 +1,39 @@
+.label
+{
+    color:$color-label;
+    margin-bottom: $px5;
+}
+.required
+{
+    color:$color-required;
+    position: relative;
+    left: $px5;
+}
+.label__name_age
+{
+    min-width: $px50;
+    position: relative;
+    top: $px10;
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .label
+        {
+            margin-bottom: $px5 * $scale;
+        }
+        .required
+        {
+            left: $px5 * $scale;
+        }
+        .label__name_age
+        {
+            min-width: $px50 * $scale;
+            top: $px10 * $scale;
+        }
+       
+    }
+
+}

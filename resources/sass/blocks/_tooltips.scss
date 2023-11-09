@@ -1,0 +1,27 @@
+.tooltips.tooltips_second .tooltips__media img,
+.tooltips.tooltips_second .tooltips__media svg {
+  fill: rgb(8, 22, 14);
+}
+.tooltips .tooltips__media img,
+.tooltips .tooltips__media svg {
+  width: 1rem;
+  height: 1rem;
+  fill: rgba(8, 23, 14, 0.3);
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.tooltips .tooltips__item {
+  font-size: 0.875rem;
+  line-height: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.tooltips.tooltips_second .tooltips__title .title__text {
+  color: rgb(8, 22, 14);
+}

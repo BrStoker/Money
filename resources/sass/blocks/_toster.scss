@@ -1,0 +1,21 @@
+.toster-wrapper{
+    position: fixed;
+    z-index:9999;
+    top: $px10;
+    right:$width-aside;
+    margin-right: $px10;
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .toster-wrapper{
+            top: $px10 * $scale;
+            right: $px10 * $scale;
+            margin-right: $px10 * $scale;
+        }
+       
+    }
+
+}

@@ -1,0 +1,70 @@
+main, article, aside, details, figcaption, figure,
+footer, header, menu, nav, section {
+  display: block;
+}
+.tabs .tabs__header:not(:last-child) {
+  margin-bottom: 1rem;
+}
+.tabs .tabs__header .tabs__list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+  overflow-x: auto;
+}
+.tabs .tabs__header .tabs__item {
+  padding: 0.75rem 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+.tabs .tabs__header .tabs__item:not(:last-child) {
+  margin-right: 2rem;
+}
+.tabs .tabs__header .tabs__item:before {
+  content: "";
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0;
+  height: 0.125rem;
+  width: 0;
+  background-color: rgb(11, 118, 54);
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.tabs .tabs__header .tabs__item.tabs__item_active:before {
+  width: 100%;
+}
+.tabs .tabs__header .tabs__item.tabs__item_active .tabs__title .title__text {
+  color: rgb(11, 118, 54);
+}
+.tabs .tabs__title .title__text {
+  color: rgb(8, 22, 14);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.tabs .tabs__body {
+  position: relative;
+}
+.tabs .tabs__body .tabs__item {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.tabs .tabs__body .tabs__item.tabs__item_active {
+  position: relative;
+  opacity: 1;
+  visibility: visible;
+}

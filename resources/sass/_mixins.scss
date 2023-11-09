@@ -1,0 +1,22 @@
+@mixin font-face($family, $file, $path, $svg, $weight: normal, $style: normal){
+  
+  $eot: ".eot";
+  $eot2: ".eot?#iefix";
+  $woff: ".woff";
+  $woff2: ".woff2";
+  $ttf: ".ttf";
+  $svg: ".svg##{$svg}";
+
+  @font-face{
+    font-family: $family;
+    src: url($path + $file + $eot);
+    src: url($path + $file + $eot2) format('embedded-opentype'),
+    url($path + $file + $woff) format('woff'),
+    url($path + $file + $woff2) format('woff2'),
+    url($path + $file + $ttf) format('truetype'),
+    url($path + $file + $svg) format('svg');
+    font-weight: $weight;
+    font-style: $style;
+  }
+
+}

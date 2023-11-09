@@ -1,0 +1,101 @@
+.layout__modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  visibility: hidden;
+  opacity: 0;
+  background-color: rgba(8, 23, 14, 0.7);
+  z-index: 11;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.layout_modal-active .layout__modal {
+  opacity: 1;
+  visibility: visible;
+}
+.modal__layout {
+  position: fixed;
+  top: auto;
+  bottom: 0;
+  cursor: auto;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: rgb(255, 255, 255);
+  padding: 1.25rem 1rem;
+  z-index: 111;
+  -webkit-transform: translateY(100%);
+  transform: translateY(100%);
+  overflow: hidden;
+  overflow-y: auto;
+  max-height: 100vh;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+@media screen and (min-width: 1024px) and (min-height: 40rem) {
+  .modal__layout {
+    top: 50%;
+    bottom: auto;
+    left: 50%;
+    max-height: 90vh;
+    border-radius: 1rem;
+    padding: 2.5rem 3rem;
+    max-width: 90vw;
+    width: 58.75rem;
+    -webkit-transform: translate(-50%, 50vh);
+    transform: translate(-50%, 50vh);
+  }
+}
+.modal__layout.modal__layout_tiny {
+  width: 30rem;
+}
+.modal__layout.modal__layout_active {
+  -webkit-transform: translateY(0%);
+  transform: translateY(0%);
+}
+@media screen and (min-width: 1024px) and (min-height: 40rem) {
+  .modal__layout.modal__layout_active {
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+}
+.modal__layout .modal__action {
+  width: 1rem;
+  min-width: 1rem;
+  height: 1rem;
+  margin-left: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+.modal__layout .modal__action img,
+.modal__layout .modal__action svg {
+  width: 100%;
+  height: 100%;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.modal__layout .modal__main {
+  overflow: hidden;
+  overflow-y: auto;
+}

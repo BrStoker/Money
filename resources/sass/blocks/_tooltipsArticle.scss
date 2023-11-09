@@ -1,0 +1,146 @@
+.tooltips .tooltips__item {
+  font-size: 0.875rem;
+  line-height: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.tooltips .tooltips__item:not(:last-child) {
+  margin-right: 0.5rem;
+}
+.tooltips .tooltips__item.tooltips__item_dinamic {
+  cursor: pointer;
+}
+.tooltips .tooltips__item.tooltips__item_dinamic:hover .tooltips__media {
+  background-color: rgb(11, 118, 54);
+}
+.tooltips .tooltips__item.tooltips__item_dinamic:hover .tooltips__media img,
+.tooltips .tooltips__item.tooltips__item_dinamic:hover .tooltips__media svg {
+  fill: rgb(255, 255, 255);
+}
+.tooltips .tooltips__media:not(:last-child),
+.tooltips .tooltips__title:not(:last-child),
+.tooltips .tooltips__headline:not(:last-child),
+.tooltips .tooltips__tag:not(:last-child) {
+  margin-right: 0.25rem;
+}
+.tooltips .tooltips__media {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background-color: transparent;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.tooltips .tooltips__media img,
+.tooltips .tooltips__media svg {
+  width: 1rem;
+  height: 1rem;
+  fill: rgba(8, 23, 14, 0.3);
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.tooltips .tooltips__title .title__text {
+  color: rgba(8, 23, 14, 0.3);
+}
+.tooltips .tooltips__headline .headline__text {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 600;
+}
+@media screen and (min-width: 768px) {
+  .tooltips .tooltips__headline .headline__text {
+    font-size: 1rem;
+    line-height: 2.5rem;
+  }
+}
+.tooltips .tooltips__tag {
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  background-color: rgb(235, 237, 237);
+}
+.tooltips .tooltips__tag .tag__text {
+  color: rgba(8, 23, 14, 0.8);
+}
+.series .series__group:not(:last-child) {
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+@media screen and (min-width: 768px) {
+  .series .series__group:not(:last-child) {
+    margin-right: 1.75rem;
+    margin-bottom: 0;
+  }
+}
+.series .series__group.series__group_main {
+  width: 5rem;
+  min-width: 5rem;
+}
+@media screen and (min-width: 768px) {
+  .series .series__group.series__group_main {
+    width: 10.75rem;
+    min-width: 10.75rem;
+  }
+}
+.series .series__group.series__group_second {
+  width: 3rem;
+  min-width: 3rem;
+}
+@media screen and (min-width: 768px) {
+  .series .series__group.series__group_second {
+    width: 6.25rem;
+    min-width: 6.25rem;
+  }
+}
+.series .series__group.series__group_tertiary {
+  width: 2.5rem;
+  min-width: 2.5rem;
+}
+@media screen and (min-width: 768px) {
+  .series .series__group.series__group_tertiary {
+    margin-right: 1rem;
+  }
+}
+.media.media_tertiary {
+  position: relative;
+}
+.media.media_tertiary:before {
+  content: "";
+  border: double 0.125rem transparent;
+  border-radius: 50%;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(white), to(white)), radial-gradient(circle at top left, rgba(11, 118, 54, 0) 0%, rgba(11, 118, 54, 0) 35%, rgba(11, 118, 54, 0.75) 75%, rgb(11, 118, 54) 100%);
+  background-image: linear-gradient(white, white), radial-gradient(circle at top left, rgba(11, 118, 54, 0) 0%, rgba(11, 118, 54, 0) 35%, rgba(11, 118, 54, 0.75) 75%, rgb(11, 118, 54) 100%);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  display: inline-block;
+  width: calc(100% + 0.125rem);
+  height: calc(100% + 0.125rem);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+@media screen and (min-width: 768px) {
+  .media.media_tertiary:before {
+    border-width: 0.125rem;
+    width: calc(100% + 0.25rem);
+    height: calc(100% + 0.25rem);
+  }
+}

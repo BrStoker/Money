@@ -1,0 +1,93 @@
+.form-item__support {
+  position: relative;
+}
+.form-item__support:hover .support__dropdown {
+  opacity: 1;
+  max-height: 20rem;
+  visibility: visible;
+}
+.form-item__support .support__dropdown {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background-color: rgb(255, 255, 255);
+  opacity: 0;
+  max-height: 0;
+  min-width: 16.125rem;
+  position: absolute;
+  visibility: hidden;
+  bottom: 100%;
+  left: 50%;
+  -webkit-box-shadow: 0 4px 16px rgba(87, 191, 171, 0.2);
+  box-shadow: 0 4px 16px rgba(87, 191, 171, 0.2);
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.form-item__support .support__list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+.form-item__support .support__item:not(:last-child) {
+  margin-bottom: 1rem;
+}
+.form-item__support .support__item:hover .support__link {
+  border-color: rgb(11, 118, 54);
+}
+.form-item__support .support__link {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 0.125rem solid rgba(8, 23, 14, 0.2);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.form-item__support .support__media {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.form-item__support .support__media:not(:last-child) {
+  margin-right: 0.5rem;
+}
+.form-item__support .support__title .title__text {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+}
+.btn.btn_secondary {
+  color: rgb(8, 22, 14);
+  background: rgb(255, 255, 255);
+}
+.btn.btn_secondary:hover {
+  color: rgb(10, 123, 55);
+  background: rgb(255, 255, 255);
+}
+.btn.btn_secondary:hover .btn__ico {
+  fill: rgb(10, 123, 55);
+}
+.btn.btn_secondary .btn__ico {
+  fill: rgb(8, 22, 14);
+}

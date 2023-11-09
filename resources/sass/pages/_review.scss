@@ -1,0 +1,17 @@
+.review__score-item
+{
+    margin-bottom: $px20;
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .review__score-item
+        {
+            margin-bottom: $px20 * $scale;
+        }
+       
+    }
+
+}

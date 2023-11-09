@@ -1,0 +1,108 @@
+.button
+{
+    cursor: pointer;
+    outline: none;
+    border:none;
+    width: $button_width;
+    height: $button_height;
+    justify-content: center;
+    align-items: center;
+    background-color: $color-two;
+    border-bottom: $px4 solid $color-two-border;
+    border-radius: $px11;
+    display: flex;
+    color: #fff;
+    font-size: $button_fs;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0  $px4 $px4 rgba(111, 142, 136, 0.25);
+    padding-top: $px2;
+}
+.button:hover
+{
+    text-decoration: none;
+    box-shadow: unset;
+    border-bottom: none;
+}
+.button__name_auth
+{
+    width: $button2_width;
+    height: $button2_height;
+    background-color: $color-first;
+    border-bottom: $px4 solid $color-first-border;
+    margin-bottom: $px15;
+    font-size: $button2_fs;
+    margin: $px15 0;
+}
+.button__width_full
+{
+    width: 100%;
+}
+.button__type_reset
+{
+    background-color: unset;
+    border-bottom: none;
+    box-shadow: unset;
+    color:#8C8C8C;
+}
+.button__type_reset:hover
+{
+    color:$color-link-auth;
+}
+.button__margin-top{
+    margin-top: $px15;
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .button {
+            width: $button_width * $scale;
+            height: $button_height * $scale;
+            border-bottom: $px4 * $scale solid $color-two-border;
+            border-radius: $px11 * $scale;
+            font-size: $button_fs * $scale;
+            box-shadow: 0  $px4 * $scale $px4 * $scale rgba(111, 142, 136, 0.25);
+            padding-top: $px2;
+        }
+        
+        .button__name_auth
+        {
+            width: $button2_width * $scale;
+            height: $button2_height * $scale;
+            border-bottom: $px4 * $scale solid $color-first-border;
+            margin-bottom: $px15 * $scale;
+            font-size: $button2_fs * $scale;
+            margin: $px15 * $scale 0;
+        }
+        
+        .button__margin-top{
+            margin-top: $px15 * $scale;
+        }
+
+        .button__type_reset,
+        .button__type_submit{
+            margin-bottom: $px10 * $scale;
+        }   
+
+        .button__type_reset{
+            border-bottom: none;
+            box-shadow: unset;
+        }
+        
+        .button__width_full{
+            width:100%;
+        }
+       
+    }
+
+}
+
+@media screen and (max-width: 959px) {
+
+    .button__type_reset,
+    .button__type_submit{
+        width:75%;
+    }   
+}

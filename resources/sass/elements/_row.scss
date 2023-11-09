@@ -1,0 +1,207 @@
+.row{
+    display:flex;
+}
+.row__name_centered
+{
+    margin:0 auto;
+}
+.row__position_relative
+{
+    position: relative;
+}
+.row__vtext_center
+{
+    align-items: center;
+}
+.row__text_left
+{
+    text-align: left;
+}
+.row__text_right
+{
+    text-align: right;
+}
+.row__text_center
+{
+    text-align: center;
+}
+.row__justify_center
+{
+    justify-content: center;
+}
+.row__justify_left
+{
+    justify-content: flex-start;
+}
+.row__justify_right
+{
+    justify-content: flex-end;
+    margin-right: $px18;
+}
+.row__wrap_wrap
+{
+    flex-wrap: wrap;
+}
+.row__width_full
+{
+    width:100%;
+}
+.row__width_half-full
+{
+    width:50%;
+}
+.row__width_profile
+{
+    width:85%;
+}
+.row__width_profile-half
+{
+    width:43%;
+}
+.row__height_full
+{
+    height:100%;
+}
+.row__name_aside_buttons
+{
+    padding: $px30 0;
+}
+.row__name_index-banner
+{
+    margin-bottom: $px20;
+}
+.row__name_index-description
+{
+    margin-top: $px12;
+    margin-bottom: $px40;
+    padding: 0 $px200;
+}
+.row__name_cloud
+{
+    position: relative;
+    background-color: #fff;
+    box-shadow: $px-3 $px7 $px55 $px10 rgba(241, 203, 181, 0.25);
+    border-radius: $px24;
+    margin-bottom: $px50;
+    padding: $px30;
+}
+.row__name_select-description
+{
+    color: $color-link-auth;
+    margin-bottom: $px20;
+    font-size: $px12;
+}
+.row__name_profile-detail
+{
+    margin-bottom: $px20;
+}
+.row__name_margin
+{
+    margin-left: $px10;
+    display: flex;
+}
+.row__empty_list
+{
+    margin-left: $px10;
+    justify-content: center;
+    
+}
+.display-none{
+    display: none;
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .row__justify_right
+        {
+            margin-right: $px18 * $scale;
+        }
+        .row__name_aside_buttons
+        {
+            padding: $px30 * $scale 0;
+        }
+        .row__name_index-banner
+        {
+            margin-bottom: $px20 * $scale;
+        }
+        .row__name_index-description
+        {
+            margin-top: $px12 * $scale;
+            margin-bottom: $px40 * $scale;
+            padding: 0 $px200 * $scale;
+        }
+        .row__name_cloud
+        {
+            box-shadow: $px-3 * $scale $px7 * $scale $px55 * $scale $px10 * $scale rgba(241, 203, 181, 0.25);
+            border-radius: $px24 * $scale;
+            margin-bottom: $px50 * $scale;
+            padding: $px30 * $scale;
+        }
+        .row__name_select-description
+        {
+            margin-bottom: $px20 * $scale;
+            font-size: $px12 * $scale;
+        }
+        .row__name_profile-detail
+        {
+            margin-bottom: $px20 * $scale;
+        }
+        .row__name_margin
+        {
+            margin-left: $px10 * $scale;
+        }
+        .row__empty_list
+        {
+            margin-left: $px10 * $scale;
+            
+        }
+
+        .row.row__name_user-statistic-button{
+            width:50%;
+        }
+        
+        .row__name_user-statistic{
+            margin: $px10 0 ;
+        }
+       
+    }
+
+}
+
+@media (max-width: 959px) {
+
+	.row{
+        display: flex;
+        flex-wrap: wrap;
+        width: calc(100% + 1.25rem);
+        margin: 0 -0.625rem;
+    }
+    .row__name_user-statistic{
+        justify-content: left;
+    }
+    .row__name_index-description{
+        padding:0;
+    }
+    .row__name_cloud{
+        text-align: center;
+    }
+
+    .row__name_margin{
+        display: none;
+    }
+
+}
+
+@media screen and (max-width: 425px) {
+
+    .row__name_user-statistic{
+        justify-content: center;
+    }
+    .row.row__name_user-statistic{
+        width:100%;
+        justify-content: center;
+    }
+
+}

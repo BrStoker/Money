@@ -1,0 +1,68 @@
+.image
+{
+    width:100%;
+}
+.image__name_logo
+{
+    width: $px110;
+    height: $px110;
+}
+.image__name_socials
+{
+    width: $px25;
+    height: $px25;
+    position: relative;
+    top: $px6;
+    margin-bottom: $px10;
+    margin-right: $px10;
+}
+.image__name_banner
+{
+    width: $px517;
+    height: $px202;
+}
+.image__type_password
+{
+    position: absolute;
+    top:0;
+    right:0;
+    width: $px55;
+    height: $px55;
+}
+.image__name_avatar
+{
+    width:auto;
+    height:100%;
+    transform: scale(1.1);
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .image__name_logo
+        {
+            width: $px110 * $scale;
+            height: $px110 * $scale;
+        }
+        .image__name_socials
+        {
+            width: $px25 * $scale;
+            height: $px25 * $scale;
+            top: $px6 * $scale;
+            margin-bottom: $px10 * $scale;
+            margin-right: $px10 * $scale;
+        }
+        .image__name_banner
+        {
+            width: $px517 * $scale;
+            height: $px202 * $scale;
+        }
+        .image__type_password
+        {
+            width: $px55 * $scale;
+            height: $px55 * $scale;
+        }
+    }
+
+}

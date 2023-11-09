@@ -1,0 +1,353 @@
+.input__wrapper
+{
+    position: relative;
+    display:flex;
+    width:100%;
+    margin-bottom: $px20;
+}
+.input__wrapper__width_auto
+{
+    width:auto;
+}
+.input__wrapper__style_hidden
+{
+    display: none;
+}
+.input
+{
+    outline: none;
+    display:block;
+    width:100%;
+    height:$px55;
+    border: $px1 solid #e9e9e9;
+    border-radius: $px11;
+    padding: $px15;
+    font-size: $px16;
+}
+.input::placeholder
+{
+    color:$color-placeholder;
+}
+.input:focus
+{
+    border: $px1 solid $color-first;
+}
+.input[type="radio"],.input[type="checkbox"]
+{
+    cursor: pointer;
+    position: relative;
+    width: $px23;
+    height: $px23;
+    border: $px1 solid $color-first;
+    outline: none;
+    border-radius: $px6;
+    margin-right: $px6;
+    margin-bottom: 0;
+}
+.input[type="radio"],.input[type="checkbox"] + .label:before
+{
+    cursor:pointer;
+    position: relative;
+    content: '';
+    display:inline-block;
+    width: $px23;
+    height: $px23;
+    top: $px2;
+    left: $px-18;
+    margin-left: $px-15;
+}
+.input[type="radio"]:checked,.input[type="checkbox"]:checked
+{
+    border: $px1 solid $color-first;
+    background-color: $color-first;
+}
+.input[type="radio"]:checked,.input[type="checkbox"]:checked + .label:before
+{
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEQAAABACAMAAACUXCGWAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAelQTFRFAAAA////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////jAF7MwAAAKN0Uk5TAARjAVPUX0LH/n0vuPz/mgMKmPm1BzPZzA9i9OEaAo798SkIs/o9LFU83nJL6JBY76wFWhBk8xtr9Spv9z5z+OxR+4ZwoglsvhV89tYoRWdojfKwDdAg5edAI9xqlRLCvBEMsi2U1d0WoTpZ2HF0vX6lBjm0ODBcSOq3ZuLmHqlOF+khzZN2GMGgN2Hf25bJTfAxxtEOrjsnkZITeUduqsgmHTpp938AAAKTSURBVHicpdf3X9NAFADwqxEx1h7VWlsUYmNBNkJwNIqlIlq1OEBwFAUE98AOFXGAEwfiXjjRv9Qml6TX8WmSd++n5l3zzV0uubxDiDkcS5gJbmnZMlajfDm/gmMjnCtduMLNRKxa7cF4jZfJWOvDGPsrmYx16zNGVTULIWwIZAxxI4sRrMkQuHYTi1HnVwy+nsVoaFQM3MRAcM0tqtEqMBib21SjXYIbQgcx/FvghnvrNtWo2g43HCFZNdp2wA1pZyfpxy4GI9ylGpHd7IYcYje698BXEEcPMfi9++BGlNxTvP8A2HAfjBGj9xDYEMIeYrQcBhvcEXI/sHwUbKAObSyuPvjENPcTAx8bABsNEc0YPA42nCc04+QpsBEf0ozYabBRPagZgTMOqDE8ohl49KzpnzlJiYL02Lhu+M6VBrzl50cuXMzE0KW8luBlXjPEK6X7cPWafjV8PbdJag1oDa5oySKEmwgYBr4xTDe5E916QzJVsiO0gbvSVIsQ8uj53vxx5sVNTMcE1cWmmJ4Vb5U20O0cZDz7ckyKRjZsWpUlaUR06uk7U0byrvl6GHfRyj0tm75vpB5MmxoI9dHIDLlqnc/IeB5aMNAjmUIeqwXUk6fZzDNr69As3ZXJTOL5i+xxmfkro8bAFIW8TKHKGt447H9lzUBojkJex73JrIETlmvu1Dyl1L+hpuvtmFUDoXcUEqnN/n7/wbqBhI+4aNjbQKSLGp8+2zEQ+lLEkL/aM9A3vhBZsF2ofi8wRn/YNXIffnVmINV/Tx7yE/LtDjayDkaJX7QRSZufUDTaKeQ3dAsx3WkYf+CFSFQ35uHVHZIWieFhKLsR+ktqkQS4iFBjTnnkZtg2zEhY4PHiP7tn/QeTuXs85N7UJQAAAABJRU5ErkJggg==');
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.input__type_tabs
+{
+    margin-left: $px10;
+    margin-right: $px10;
+}
+.password-show
+{
+    cursor: pointer;
+}
+.password-show__state_active
+{
+    opacity: 0.3;
+}
+.input__name_profile
+{
+    font-size: $px14;
+    height: $px45;
+}
+.input__name_profile-xxl
+{
+    max-width: $px300;
+    min-width: $px300;
+    margin-right: $px15;
+    height: $px55;
+}
+.input__name_profile-xl
+{
+    max-width: $px253;
+    min-width: $px253;
+    margin-right: $px70;
+    height: $px55;
+}
+.input__name_profile-md
+{
+    max-width: $px120;
+    min-width: $px120;
+    margin-right: $px15;
+    height: $px55;
+}
+.input__name_profile-md.input__name_sex-women
+{
+    margin-right: $px70;
+    height: $px55;
+}
+.input__name_profile-sm
+{
+    max-width: $px125;
+    min-width: $px125;
+    margin-right: $px60;
+    height: $px55;
+}
+.input__name_profile-xs
+{
+    max-width: $px93;
+    min-width: $px93;
+    margin-right: $px15;
+    margin-left: $px15;
+    height: $px55;
+}
+.input[type="radio"] + label,.input[type="checkbox"] + label
+{
+    color:$color-text;
+}
+.input__name_profile-statistic
+{
+    min-width: 23.8%;
+    max-width: 23.8%;
+    margin-left: $px7;
+    margin-right: $px7;
+}
+.input__name_profile-statistic:nth-child(4n-2)
+{
+    margin-left:0;
+}
+.input__name_profile-statistic:nth-child(4n+1)
+{
+    margin-right:0;
+}
+
+.input__type_hidden{
+    display: none;
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .input__wrapper
+        {
+            margin-bottom: $px20 * $scale;
+        }
+        
+        .input
+        {
+            height:$px55 * $scale;
+            border: $px1 * $scale solid #e9e9e9;
+            border-radius: $px11 * $scale;
+            padding: $px15 * $scale;
+            font-size: $px16 * $scale;
+        }
+
+        .input:focus
+        {
+            border: $px1 * $scale solid $color-first;
+        }
+
+        .input[type="radio"],.input[type="checkbox"]
+        {
+            width: $px23 * $scale;
+            height: $px23 * $scale;
+            border: $px1 * $scale solid $color-first;
+            border-radius: $px6 * $scale;
+            margin-right: $px6 * $scale;
+        }
+
+        .input[type="radio"],.input[type="checkbox"] + .label:before
+        {
+            width: $px23 * $scale;
+            height: $px23 * $scale;
+            top: $px2 * $scale;
+            left: $px-18 * $scale;
+            margin-left: $px-15 * $scale;
+        }
+
+        .input[type="radio"]:checked,.input[type="checkbox"]:checked
+        {
+            border: $px1 * $scale solid $color-first;
+        }
+        
+        .input__name_profile
+        {
+            font-size: $px14 * $scale;
+            height: $px45 * $scale;
+        }
+        .input__name_profile-xxl
+        {
+            max-width: $px300 * $scale;
+            min-width: $px300 * $scale;
+            margin-right: $px15 * $scale;
+            height: $px55 * $scale;
+        }
+
+
+        @if $index > 768{
+            .input__name_profile-xl
+            {
+                max-width: $px253 * $scale;
+                min-width: $px253 * $scale;
+                margin-right: $px70 * $scale;
+                height: $px55 * $scale;
+            }
+        }
+        @else {
+            .input__name_profile-xl
+            {
+                max-width: $px225 * $scale;
+                min-width: $px225 * $scale;
+                margin-right: $px70 * $scale;
+                height: $px55 * $scale;
+            }
+        }
+
+        .input__name_profile-md
+        {
+            max-width: $px120 * $scale;
+            min-width: $px120 * $scale;
+            margin-right: $px15 * $scale;
+            height: $px55 * $scale;
+        }
+
+        .input__name_profile-md.input__name_sex-women
+        {
+            margin-right: $px70 * $scale;
+            height: $px55 * $scale;
+        }
+
+        .input__name_profile-sm
+        {
+            max-width: $px125 * $scale;
+            min-width: $px125 * $scale;
+            margin-right: $px60 * $scale;
+            height: $px55 * $scale;
+        }
+
+        .input__name_profile-xs
+        {
+            max-width: $px93 * $scale;
+            min-width: $px93 * $scale;
+            margin-right: $px15 * $scale;
+            margin-left: $px15 * $scale;
+            height: $px55 * $scale;
+        }
+
+        @if $index > 768{
+            .input__name_profile-statistic
+            {
+                min-width: 23.8%;
+                max-width: 23.8%;
+                margin-left: $px7 * $scale;
+                margin-right: $px7 * $scale;
+            }
+        }
+        @else if $index > 568{
+            .input__name_profile-statistic
+            {
+                min-width: 48.5%;
+                max-width: 48.5%;
+                margin-left: $px7 * $scale;
+                margin-right: $px7 * $scale;
+            }
+        }
+        @else{
+            .input__name_profile-statistic
+            {
+                min-width: 100%;
+                max-width: 100%;
+                margin-left: $px7 * $scale;
+                margin-right: $px7 * $scale;
+            }
+        }
+
+        
+       
+    }
+
+}
+
+@media screen and (max-width: 959px) {
+
+    .input{
+        text-align: center;
+    }
+
+    .input__type_tabs
+    {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .input__wrapper__name_user-statistic{
+        width: calc(100%/3);
+    }
+
+}
+
+@media screen and (max-width: 568px) {
+
+
+    .input__wrapper____name_profile-xl,
+    .input__wrapper____name_profile-age{
+        width: calc(100%/2);
+    }
+
+}
+
+@media screen and (max-width: 425px) {
+
+    .input__wrapper__name_user-statistic:not(.input__wrapper____name_profile-age){
+        width: 100%;
+    }
+
+    .input__wrapper____name_profile-age{
+        width: 75%;
+    }
+
+    .input__name_profile{
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .input__name_profile-md.input__name_sex-women{
+        margin-right: 0;
+    }
+
+    .input__wrapper__name_prices{
+        width: 100%;
+    }
+
+}

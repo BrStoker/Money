@@ -1,0 +1,25 @@
+.list
+{
+    margin: $px10 $px15;
+}
+.list__item
+{
+    margin: $px5 0 $px5;
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .list
+		{
+			margin: $px10 * $scale $px15 * $scale;
+		}
+		.list__item
+		{
+			margin: $px5 * $scale 0 $px5 * $scale;
+		}
+       
+    }
+
+}

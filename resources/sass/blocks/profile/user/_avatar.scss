@@ -1,0 +1,44 @@
+.user-avatar
+{
+    position: relative;
+    border: $px1 solid $color-first;
+    overflow: hidden;
+    border-radius: 50%;
+    width: $px190;
+    height: $px190;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.user-avatar__edit
+{
+    position: absolute;
+    right: 38%;
+    bottom: 5%;
+    width: $px41;
+    height: $px41;
+}
+.user-avatar__edit:hover
+{
+    transform: scale(1.1);
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .user-avatar
+        {
+            border: $px1 * $scale solid $color-first;
+            width: $px190 * $scale;
+            height: $px190 * $scale;
+        }
+        .user-avatar__edit
+        {
+            width: $px41 * $scale;
+            height: $px41 * $scale;
+        }
+       
+    }
+
+}

@@ -1,0 +1,174 @@
+@media screen and (min-width: 768px) {
+  .form-item {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+}
+.form-item__ico {
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+  width: 3.5rem;
+  height: 3.5rem;
+  top: 0;
+}
+.form-item__ico:hover svg,
+.form-item__ico:hover img {
+  fill: rgb(10, 123, 55);
+}
+.form-item__ico svg,
+.form-item__ico img {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: rgba(8, 23, 14, 0.2);
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.form-item__input {
+  color: rgb(8, 22, 14);
+  background-color: rgb(255, 255, 255);
+  font-size: 1rem;
+  line-height: 1rem;
+  font-weight: 500;
+  font-family: "Montserrat", sans-serif;
+  padding: 1rem 1.25rem;
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 0.125rem solid rgba(8, 23, 14, 0.2);
+  margin: 0;
+  text-overflow: ellipsis;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.form-item__input.form-item__input_second {
+  text-align: center;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.form-item__input:disabled {
+  opacity: 0.5;
+}
+.form-item__input.error {
+  border-color: #F22A2A;
+}
+.form-item__input::-webkit-input-placeholder {
+  opacity: 1;
+  color: rgba(8, 23, 14, 0.2);
+}
+.form-item__input::-moz-placeholder {
+  opacity: 1;
+  color: rgba(8, 23, 14, 0.2);
+}
+.form-item__input:-ms-input-placeholder {
+  opacity: 1;
+  color: rgba(8, 23, 14, 0.2);
+}
+.form-item__input::-ms-input-placeholder {
+  opacity: 1;
+  color: rgba(8, 23, 14, 0.2);
+}
+.form-item__input::placeholder {
+  opacity: 1;
+  color: rgba(8, 23, 14, 0.2);
+}
+.form-item__input:focus, .form-item__input:hover {
+  border-color: rgb(10, 123, 55);
+}
+.form-item__input.form-item__input_textarea {
+  width: 100%;
+  height: 9.25rem;
+  resize: none;
+}
+
+.custom-check:hover .custom-check__ico.custom-check__ico_before {
+  stroke: rgb(8, 22, 14);
+}
+.custom-check .custom-check__label {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.custom-check .custom-check__input {
+  position: absolute;
+  opacity: 0;
+}
+.custom-check .custom-check__input:checked ~ .custom-check__ico.custom-check__ico_before {
+  opacity: 0;
+}
+.custom-check .custom-check__input:checked ~ .custom-check__ico.custom-check__ico_after {
+  opacity: 1;
+}
+.custom-check .custom-check__input:disabled ~ .custom-check__text {
+  pointer-events: none;
+}
+.custom-check .custom-check__input.error ~ .custom-check__text {
+  color: rgb(254, 212, 92);
+}
+.custom-check .custom-check__text {
+  font-size: 1rem;
+  line-height: 1.625rem;
+  padding-left: 2.25rem;
+  position: relative;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+.custom-check .custom-check__ico {
+  width: 1.5rem;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.custom-check .custom-check__ico:not(:last-child) {
+  margin-right: 0.25rem;
+}
+.custom-check .custom-check__ico.custom-check__ico_before {
+  opacity: 1;
+  fill: transparent;
+  stroke: rgba(8, 23, 14, 0.2);
+}
+.custom-check .custom-check__ico.custom-check__ico_after {
+  opacity: 0;
+}
+.custom-check input[type=radio] ~ .custom-check__text:before, .custom-check input[type=radio] ~ .custom-check__text:after {
+  border-radius: 50%;
+}
+.modal-init {
+  cursor: pointer;
+}
+.error{
+  color: red;
+  display: flex;
+  justify-content: center;
+}
+.mb10{
+  margin-bottom: 10px;
+}

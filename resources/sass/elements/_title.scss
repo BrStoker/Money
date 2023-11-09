@@ -1,0 +1,109 @@
+.title
+{
+    width:100%;
+    color:$color-title;
+    margin-bottom: $px10;
+}
+.title__size_xl
+{
+    font-size: $font-size-title-xl;
+	line-height: $font-size-title-xl + 0.7;
+    font-weight: 600;
+}
+.title__size_sm
+{
+    font-size: $font-size-title-sm;
+	line-height: $font-size-title-sm + 0.7;
+    font-weight: 600;
+}
+.title__size_md
+{
+    font-size: $font-size-title-md;
+	line-height: $font-size-title-md + 0.7;
+    font-weight: 600;
+}
+.title__size_xs
+{
+    font-size: $font-size-title-xs;
+	line-height: $font-size-title-xs + 0.7;
+    font-weight: 600;
+}
+.title__name_auth
+{
+    margin-bottom: $px25;
+}
+.title__name_profile-detail
+{
+    margin-top: $px25;
+}
+.title__type_page-title
+{
+    margin-bottom: $px25;
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .title
+		{
+			margin-bottom: $px10 * $scale;
+		}
+		.title__size_xl
+		{
+			font-size: $font-size-title-xl * $scale;
+			line-height: ($font-size-title-xl + 0.7 )  * $scale;
+		}
+		.title__size_sm
+		{
+			font-size: $font-size-title-sm * $scale;
+			line-height: ($font-size-title-sm + 0.7)  * $scale;
+		}
+		.title__size_md
+		{
+			font-size: $font-size-title-md * $scale;
+			line-height: ($font-size-title-md + 0.7) * $scale;
+		}
+		.title__size_xs
+		{
+			font-size: $font-size-title-xs * $scale;
+			line-height: ($font-size-title-xs + 0.7)  * $scale;
+		}
+		.title__name_auth
+		{
+			margin-bottom: $px25 * $scale;
+		}
+		.title__name_profile-detail
+		{
+			margin-top: $px25 * $scale;
+		}
+		.title__type_page-title
+		{
+			margin-bottom: $px25 * $scale;
+		}
+       
+    }
+
+}
+
+@media screen and (max-width: 959px) {
+
+	.title{
+		text-align: center;
+	}
+
+	.title__name_profile-detail-main,
+	.title__name_profile-detail{
+		text-align: left;
+	}
+
+}
+
+@media screen and (max-width: 425px) {
+
+	.title__name_profile-detail-main,
+	.title__name_profile-detail{
+		text-align: center;
+	}
+
+}

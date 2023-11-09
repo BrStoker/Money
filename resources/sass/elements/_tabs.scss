@@ -1,0 +1,23 @@
+.tabs
+{
+    position: relative;
+    width: 100%;
+    box-shadow: $px-3 $px7 $px55 $px10 rgba(241, 203, 181, 0.25);
+    border-radius: $px15;
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .tabs
+        {
+            box-shadow: none;
+            border-radius: $px15 * $scale;
+        }
+
+        
+       
+    }
+
+}

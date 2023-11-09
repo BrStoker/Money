@@ -1,0 +1,54 @@
+.profile-detail_text__type_sex-description
+{
+    font-size: $px12;
+    margin-right: $px60;
+    margin-top: $px-15;
+}
+.profile-detail_text__type_price-description
+{
+    font-size: $px12;
+    margin-top: $px-15;
+    margin-bottom: $px10;
+    min-width: 43%;
+    color: #51B29B;
+}
+.profile-detail_text__type_field-description
+{
+    min-width: $px65;
+    margin-top: $px10;
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .profile-detail_text__type_sex-description
+		{
+			font-size: $px12 * $scale;
+			margin-right: $px80 * $scale;
+			margin-top: $px-25  * $scale;
+		}
+		.profile-detail_text__type_price-description
+		{
+			font-size: $px12  * $scale;
+			margin-top: $px-15  * $scale;
+			margin-bottom: $px5  * $scale;
+		}
+		.profile-detail_text__type_field-description
+		{
+			min-width: $px65  * $scale;
+			margin-top: $px5  * $scale;
+		}
+       
+    }
+
+}
+
+@media screen and (max-width: 425px) {
+
+    .profile-detail_text__type_sex-description{
+		margin-right: $px35 * map-get($scales, 425);
+		margin-left: $px40 * map-get($scales, 425);
+	}
+
+}

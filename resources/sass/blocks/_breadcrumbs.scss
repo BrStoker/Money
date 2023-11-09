@@ -1,0 +1,42 @@
+.layout__breadcrumbs {
+  padding: 1rem 1.25rem;
+}
+@media (min-width: 1200px) {
+  .layout__breadcrumbs {
+    padding: 1rem 7.75rem 1rem 1.5rem;
+  }
+}
+.layout__breadcrumbs .breadcrumbs__list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+.layout__breadcrumbs .breadcrumbs__item {
+  margin-bottom: 0.25rem;
+}
+.layout__breadcrumbs .breadcrumbs__item:not(:last-child) {
+  margin-right: 0.75rem;
+}
+.layout__breadcrumbs .breadcrumbs__link {
+  color: rgba(8, 23, 14, 0.4);
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.layout__breadcrumbs .breadcrumbs__text:not(:last-child),
+.layout__breadcrumbs .breadcrumbs__ico:not(:last-child) {
+  margin-right: 0.75rem;
+}
+.layout__breadcrumbs .breadcrumbs__ico {
+  width: 0.5rem;
+  height: 1.25rem;
+}

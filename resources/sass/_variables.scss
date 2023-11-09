@@ -1,0 +1,61 @@
+$font-family: Raleway;
+
+$color-required:#E92C2C;
+$color-text:#000000;
+$color-link:#535353;
+$color-link-auth:#51B29B;
+$color-label:#7B818E;
+$color-title:#000000;
+$color-placeholder:#737373;
+$color-bg:#000000;
+$color-first:#C0E1D9;
+$color-first-border:#A1CCC2;
+$color-two:#CDBEA1;
+$color-two-border:#B6A586;
+$colog-bg-aside:#FFFFFF;
+$color-bg-footer:#E1D2B5;
+
+$font-size: $px15;
+
+$font-size-title-xl: $px28;
+$font-size-title-sm: $px24;
+$font-size-title-md: $px20;
+$font-size-title-xs: $px16;
+$font-size-title-big: $px28;
+
+$width-content: 80vw;
+$width-aside: 20vw;
+$height-content:85vh;
+$height-aside:85vh;
+$height-footer:15vh;
+
+$width-content-mobile: 100%;
+$height-content-mobile:100%;
+$height-aside-mobile:100%;
+$height-footer-mobile:auto;
+
+$top-padding-content: $px25;
+$right-padding-content: $px75;
+$bottom-padding-content: $px75;
+$left-padding-content: $px75;
+
+$top-padding-content-mobile: $px100;
+$right-padding-content-mobile: $px140;
+$bottom-padding-content-mobile: $px100;
+$left-padding-content-mobile: $px140;
+
+$button_width: $px160;
+$button_height: $px56;
+$button_fs: $px17;
+$input-width: $px435;
+$input-height: $px60;
+$button2_width: $px200;
+$button2_height: $px60;
+$button2_fs: $px20;
+
+$scales: (
+    959: 1.3,
+    768: 1.5,
+    568: 2,
+    425: 2.5
+);

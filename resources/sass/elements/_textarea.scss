@@ -1,0 +1,31 @@
+.textarea
+{
+    outline: none;
+    display:block;
+    width:100%;
+    height: $px55;
+    border: $px1 solid #BFBFBF;
+    border-radius: $px11;
+    margin-bottom: $px20;
+    padding: $px15;
+    font-size: $px16;
+    resize: none;
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .textarea
+        {
+            height: $px55 * $scale;
+            border: $px1 * $scale solid #BFBFBF;
+            border-radius: $px11 * $scale;
+            margin-bottom: $px20 * $scale;
+            padding: $px15 * $scale;
+            font-size: $px16 * $scale;
+        }
+       
+    }
+
+}

@@ -1,0 +1,21 @@
+.score__image
+{
+    width: $px36;
+    height: $px34;
+    margin-top:$px2;
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .score__image
+        {
+            width: $px36 * $scale;
+            height: $px34 * $scale;
+            margin-top:$px2 * $scale;
+        }
+       
+    }
+
+}

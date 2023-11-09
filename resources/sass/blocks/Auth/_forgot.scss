@@ -1,0 +1,48 @@
+.modal__layout .modal__main {
+  overflow: hidden;
+}
+.modal__layout .modal__return {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  cursor: pointer;
+}
+.modal__layout .modal__return:not(:last-child) {
+  margin-bottom: 1rem;
+}
+.modal__layout .modal__return:hover .return__media {
+  -webkit-transform: translateX(-0.125rem);
+  transform: translateX(-0.125rem);
+}
+.modal__layout .modal__return .return__media {
+  width: 1rem;
+  height: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+.modal__layout .modal__return .return__media:not(:last-child) {
+  margin-right: 0.25rem;
+}
+.modal__layout .modal__return .return__media img,
+.modal__layout .modal__return .return__media svg {
+  width: 100%;
+  height: 100%;
+}
+.modal__layout .modal__return .return__title .title__text {
+  color: rgb(11, 118, 54);
+  font-weight: 500;
+}

@@ -1,0 +1,10 @@
+.series .series__group.series__group_second {
+  width: 3rem;
+  min-width: 3rem;
+}
+@media screen and (min-width: 768px) {
+  .series .series__group.series__group_second {
+    width: 6.25rem;
+    min-width: 6.25rem;
+  }
+}

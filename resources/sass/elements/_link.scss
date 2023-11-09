@@ -1,0 +1,238 @@
+.link
+{
+    cursor: pointer;
+    color: $color-link;
+    text-decoration: none;
+}
+.link:hover
+{
+    text-decoration: none;
+}
+.link__type_button
+{
+    width: $button_width;
+    height: $button_height;
+    justify-content: center;
+    align-items: center;
+    background-color: $color-two;
+    border-bottom: $px4 solid $color-two-border;
+    border-radius: $px11;
+    display: flex;
+    color: #fff;
+    font-size: $button_fs;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 $px4 $px4 rgba(111, 142, 136, 0.25);
+    padding-top: $px2;
+}
+.link__type_button:hover
+{
+    text-decoration: none;
+    box-shadow: unset;
+    border-bottom: none;
+}
+.link__type_back{
+    display:inline-flex;
+    margin-bottom: $px10;
+}
+.link__name_auth
+{
+    width: $button2_width;
+    height: $button2_height;
+    background-color: $color-first;
+    border-bottom: $px4 solid $color-first-border;
+    margin-bottom: $px15;
+    font-size: $button2_fs;
+}
+.link__name_socials
+{
+    display: flex;
+    width: 100%;
+    font-size: $px18;
+    justify-content: center;
+    align-items: center;
+    text-decoration: underline;
+}
+.link__name_socials:hover
+{
+    text-decoration: none;
+}
+.link__name_cloud
+{
+    position: absolute;
+    right: $px30;
+    bottom: $px32;
+}
+.link__name_scroll__state_hidden
+{
+    display: none;
+}
+.link__name_scroll {
+    position: absolute;
+    bottom: $px10;
+    right: $px6;
+    background: $color-first;
+    width: $px60;
+    height: $px60;
+    border-radius: 50%;
+}
+.link__item_name_scroll {
+    position: absolute;
+    top: $px7;
+    left: 58%;
+    width: $px15;
+    height: $px15;
+    margin-left: $px-12;
+    border-left: $px1 solid #fff;
+    border-bottom: $px1 solid #fff;
+    transform: rotate(-45deg);
+    animation: link__name_scroll 1s infinite;
+    opacity: 0;
+  }
+.link__item_name_scroll:nth-of-type(1) {
+    animation-delay: 0s;
+}
+.link__item_name_scroll:nth-of-type(2) {
+    top: $px17;
+    animation-delay: .15s;
+}
+.link__item_name_scroll:nth-of-type(3) {
+    top: $px27;
+    animation-delay: .3s;
+}
+.link__name_auth-form
+{
+    color:$color-link-auth;
+}
+.link__item_email
+{
+    margin-left: $px10;
+    left: 0px;
+    color: #51B29B;
+    text-align: start;
+}
+.link__item_phone
+{
+    flex-wrap: wrap;
+    margin-left: $px10;
+    color: #51B29B;
+    text-align: start;
+}
+.link__item_password
+{
+    color: #51B29B;
+}
+.link__position
+{
+    width: 100%;
+}
+.link__name_edit-image{
+    font-size: $px16;
+    height: $px40;
+    width: $px160;
+}
+.link__width_full{
+    width:100%;
+}
+.link__name_view-blogers{
+    margin-top: $px10;
+}
+
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .link__type_button
+        {
+            width: $button_width * $scale;
+            height: $button_height * $scale;
+            border-bottom: $px4 * $scale solid $color-two-border;
+            border-radius: $px11 * $scale;
+            font-size: $button_fs * $scale;
+            box-shadow: 0 $px4 * $scale $px4 * $scale rgba(111, 142, 136, 0.25);
+            padding-top: $px2 * $scale;
+        }
+
+        .link__type_back{
+            margin-bottom: $px10 * $scale;
+        }
+
+        .link__name_auth
+        {
+            width: $button2_width * $scale;
+            height: $button2_height * $scale;
+            border-bottom: $px4 * $scale solid $color-first-border;
+            margin-bottom: $px15 * $scale;
+            font-size: $button2_fs * $scale;
+        }
+
+        .link__name_socials
+        {
+            font-size: $px18 * $scale;
+        }
+
+        .link__name_cloud
+        {
+            margin-top: $px10 * $scale;
+        }
+        
+        .link__item_name_scroll {
+            top: $px7 * $scale;
+            left: 58%;
+            width: $px15 * $scale;
+            height: $px15 * $scale;
+            margin-left: $px-12 * $scale;
+            border-left: $px1 * $scale solid #fff;
+            border-bottom: $px1 * $scale solid #fff;
+        }
+        
+        .link__item_name_scroll:nth-of-type(2) {
+            top: $px17 * $scale;
+        }
+
+        .link__item_name_scroll:nth-of-type(3) {
+            top: $px27 * $scale;
+        }
+
+        .link__item_email
+        {
+            margin-left: $px10 * $scale;
+        }
+
+        .link__item_phone
+        {
+            margin-left: $px10 * $scale;
+        }
+        .link__name_edit-image{
+            font-size: $px16 * $scale;
+            height: $px40 * $scale;
+            width: $px160 * $scale;
+        }
+        .link__name_view-blogers{
+            margin-top: $px10 * $scale;
+        }
+
+        .link__width_full{
+            width:100%;
+        }
+       
+    }
+
+}
+
+@media screen and (max-width: 959px) {
+    
+    .link__name_scroll {
+        display: none;
+    }
+
+    .link__name_cloud
+    {
+        position: static;
+        right: auto;
+        bottom: auto;
+    }
+
+}
+

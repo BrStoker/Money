@@ -1,0 +1,22 @@
+@-webkit-keyframes link__name_scroll {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+}
+@keyframes link__name_scroll {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+}

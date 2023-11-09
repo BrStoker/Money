@@ -1,0 +1,174 @@
+.tab:not(.tab__state_active) .tab__body
+{
+    display: none;
+}
+.tab__title
+{
+    text-align: center;
+    position:absolute;
+    top:0;
+    width: calc(100%);
+    cursor: pointer;
+    background: #FFFFFF;
+    font-size: $px24;
+    padding: $px15;
+    color:$color-title;
+    font-weight: 600;
+    border-top-left-radius: $px15;
+    border-top-right-radius: $px15;
+    cursor:pointer;
+}
+.tab:not(.tab__state_active) .tab__title
+{
+    background-color: #FFF9F5;
+    color:#B8B8B8;
+}
+.tab:nth-child(1) .tab__title
+{
+    left:0;
+}
+
+.tab__body
+{
+    margin-top:$px15*3.6;
+    padding: $px50;
+    background-color: #fff;
+    border-bottom-left-radius: $px15;
+    border-bottom-right-radius: $px15;
+}
+.tabs__hidden_title .tab__body
+{
+    margin-top: 0;
+}
+
+.tabs__count-tab_two .tab__title
+{
+    width: calc(100%/2);
+}
+
+.tabs__count-tab_two .tab:nth-child(1) .tab__title
+{
+    left:0;
+}
+.tabs__count-tab_two .tab:nth-child(2) .tab__title
+{
+    left:calc(100%/2);
+}
+
+.tabs__count-tab_three .tab__title
+{
+    width: calc(100%/3);
+}
+
+.tabs__count-tab_three .tab:nth-child(1) .tab__title
+{
+    left:0;
+}
+.tabs__count-tab_three .tab:nth-child(2) .tab__title
+{
+    left:calc(100%/3);
+}
+.tabs__count-tab_three .tab:nth-child(3) .tab__title
+{
+    right:0;
+}
+
+.tabs__count-tab_four .tab__title
+{
+    width: calc(100%/4);
+}
+
+.tabs__count-tab_four .tab:nth-child(1) .tab__title
+{
+    left:0;
+}
+.tabs__count-tab_four .tab:nth-child(2) .tab__title
+{
+    left:calc(100%/4);
+}
+.tabs__count-tab_four .tab:nth-child(3) .tab__title
+{
+    left:calc((100%/4)*2);
+}
+.tabs__count-tab_four .tab:nth-child(4) .tab__title
+{
+    right:0;
+}
+
+.tabs__count-tab_five .tab__title
+{
+    width: calc(100%/5);
+}
+
+.tabs__count-tab_five .tab:nth-child(1) .tab__title
+{
+    left:0;
+}
+.tabs__count-tab_five .tab:nth-child(2) .tab__title
+{
+    left:calc(100%/5);
+}
+.tabs__count-tab_five .tab:nth-child(3) .tab__title
+{
+    left:calc((100%/5)*2);
+}
+
+.tabs__count-tab_five .tab:nth-child(4) .tab__title
+{
+    left:calc((100%/5)*3);
+}
+
+.tabs__count-tab_five .tab:nth-child(5) .tab__title
+{
+    right:0;
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .tab__body
+        {
+            margin-top: 0;
+            margin-bottom: ($px15*3.6 )  * $scale;
+            padding: $px25 * $scale;
+            border-bottom-left-radius: $px15 * $scale;
+            border-bottom-right-radius: $px15 * $scale;
+        }
+
+        .tab__title
+        {
+            font-size: $px24 * $scale;
+            padding: $px15 * $scale;
+            border-top-left-radius: $px15 * $scale;
+            border-top-right-radius: $px15 * $scale;
+        }
+
+        .tabs .tab .tab__title
+        {
+            width:100%;
+            left:0;
+        }
+       
+    }
+
+}
+
+@media screen and (max-width: 959px) {
+
+    .tab__title{
+        position: static;
+    }
+
+    .tabs .tab .tab__title
+    {
+        background: #FFFFFF;
+        color:$color-title;
+    }
+
+    .tabs .tab .tab__body
+    {
+        display: block;
+    }
+
+}

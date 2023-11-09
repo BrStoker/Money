@@ -1,0 +1,112 @@
+.popup
+{
+    width: $px527;
+    height: $px507;
+    background: #FFFFFF;
+    box-shadow: $px-3 $px7 $px55 $px10 rgba(241, 203, 181, 0.25);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    overflow: auto;
+    padding: $px50 $px100;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+.popup__type_modal
+{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgb(0 0 0 / 20%);
+    z-index: 999;
+}
+.popup__wrapper__type_modal
+{
+    width: 90%;
+    height: 90%;
+    background: #FFFFFF;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    overflow: auto;
+}
+.popup__close
+{
+    position: absolute;
+    top: $px10;
+    right: $px20;
+    font-size: $px70;
+    cursor: pointer;
+    z-index: 10000;
+}
+.popup__close:hover
+{
+    color:$color-first;
+}
+.popup__body__type_modal
+{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    overflow: auto;
+    padding: $px50 $px100;
+    z-index: 9999;
+}
+
+@each $index, $scale in $scales {
+
+    @media screen and (max-width: #{$index}px) {
+
+        .popup
+		{
+			width: $px527 * $scale;
+			height: $px507 * $scale;
+			box-shadow: $px-3 * $scale $px7 * $scale $px55 * $scale $px10 * $scale rgba(241, 203, 181, 0.25);
+			padding: $px50 * $scale $px100 * $scale;
+		}
+		
+		.popup__close
+		{
+			top: $px10 * $scale;
+			right: $px20 * $scale;
+			font-size: $px70 * $scale;
+		}
+
+        .popup__type_inline{
+            padding: $px25 * $scale $px75 * $scale;
+        }
+
+        .popup__type_modal{
+            width:100%;
+            height:100%;            
+        }
+
+    }
+
+}
+
+@media screen and (max-width: 959px) {
+
+    .popup__type_inline{
+        width: 100%;
+        height:auto;
+        position: static;
+        top:auto;
+        left: auto;
+        bottom: auto;
+        right: auto;
+    }
+
+}
