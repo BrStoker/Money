@@ -351,27 +351,27 @@ export default {
         {
             name: 'Изменить пароль',
             inputs:[
-                {
-                    placeholder: 'Старый пароль',
-                    name: 'oldpassword',
-                    classParent: 'form-item',
-                    classCss: 'form-item__main',
-                    type: 'password',
-                    inputType: 'input',
-                    send: true,
-                    required: false,
-                    image: '/image/svg/sprite.svg#eye',
-                    header: {
-                        title: 'Старый пароль',
-                    },
-                    rules:[
-                        {
-                            regExp: /^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
-                            error: 'Пароль должен содержать буквы в разных регистрах и хотя бы одну цифру и быть не менее 8 символов'
-                        }
-                    ],
-                    value: ''
-                },
+                // {
+                //     placeholder: 'Старый пароль',
+                //     name: 'oldpassword',
+                //     classParent: 'form-item',
+                //     classCss: 'form-item__main',
+                //     type: 'password',
+                //     inputType: 'input',
+                //     send: true,
+                //     required: false,
+                //     image: '/image/svg/sprite.svg#eye',
+                //     header: {
+                //         title: 'Старый пароль',
+                //     },
+                //     rules:[
+                //         {
+                //             regExp: /^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
+                //             error: 'Пароль должен содержать буквы в разных регистрах и хотя бы одну цифру и быть не менее 8 символов'
+                //         }
+                //     ],
+                //     value: ''
+                // },
                 {
                     placeholder: 'Новый пароль',
                     name: 'newpassword',

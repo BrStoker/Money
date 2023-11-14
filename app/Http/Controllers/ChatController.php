@@ -188,10 +188,10 @@ class ChatController extends Controller
             $getRecords = '';
             if ($groupedMessages) {
                 foreach ($groupedMessages as $key => $message) {
-//                    dd($message);
+                    $date = $this->formatDateToObject($key);
                     $getRecords .= view('Chatify::layouts.listItem', [
                         'get' => 'messageList',
-                        'key' => $key,
+                        'key' => $date['date'],
                         'messages' => $message
                     ]);
 
@@ -375,6 +375,7 @@ class ChatController extends Controller
 
                 $getRecords .= view('Chatify::layouts.listItem', [
                     'get' => 'listUsers',
+                    'userId' => 0,
                     'user' => $user,
                     'id' => $request->userId
                 ])->render();
@@ -434,6 +435,7 @@ class ChatController extends Controller
 
             $userMenu = view('Chatify::layouts.listItem', [
                 'get' => 'userMenu',
+                'userId' => Auth::user()->id,
                 'countMessages' => $unreadMessages
             ])->render();
 
@@ -2584,6 +2586,19 @@ class ChatController extends Controller
             'userMenu' => $userMenu
         ]);
 
+    }
+
+    private function formatDateToObject($dateString) {
+        $messageDate = Carbon::parse($dateString);
+        $now = Carbon::now();
+
+        if ($messageDate->isSameDay($now)) {
+            return ['date' => 'Сегодня', 'time' => $messageDate->format('H:i')];
+        } elseif ($messageDate->isYesterday()) {
+            return ['date' => 'Вчера', 'time' => $messageDate->format('H:i')];
+        } else {
+            return ['date' => explode(' ', $dateString)[0], 'time' => $messageDate->format('H:i')];
+        }
     }
 
 

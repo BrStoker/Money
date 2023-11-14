@@ -2938,6 +2938,7 @@ table th {
 .tooltips .tooltips__item.tooltips__item_dinamic:hover .tooltips__media svg {
   fill: rgb(255, 255, 255);
 }
+
 .tooltips .tooltips__item.tooltips__item_absolute {
   position: absolute;
   background-color: rgb(255, 255, 255);
@@ -5363,9 +5364,13 @@ input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-.favorite {
+.favorite{
   background-color: rgb(11, 118, 54) !important;
 }
+.favorite svg{
+  fill: #ffffff !important;
+}
+
 .headline__text{
   cursor: pointer;
 }

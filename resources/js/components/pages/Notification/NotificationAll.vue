@@ -23,7 +23,6 @@ import ArticleComments from '@/js/components/pages/Notification/ArticleComments'
 
 import AppMethods from '@/js/methods/App'
 
-
 export default {
   name: 'NotificationAllPage',
 
@@ -49,21 +48,10 @@ export default {
 
   },
   methods:{
-    ...AppMethods,
-    // showBlock(){
-    //   let steps = this.schema.steps
-    //   let counts = this.$store.state.data.app.notifications.counts
-    //   Object.keys(counts).forEach(function(key) {
-    //     Object.keys(steps).forEach(function(item){
-    //       if(counts[key] > 0 && steps[item]['name'] == key){
-    //         steps[item]['show'] = true
-    //       }
-    //     })
-    //   })
-    // }
+    ...AppMethods
   },
   created(){
-    // this.showBlock()
+
   },
   mounted(){
 

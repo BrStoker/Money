@@ -21,7 +21,7 @@
               SpanElement(classCss="title__text") {{getDate(comment)}}
       DivElement(classCss="wysiwyg")
         p(v-html="comment.text")
-      DivElement(classCss="tooltips")
+      DivElement(classCss="tooltips" v-if="user.auth")
         DivElement(classCss="tooltips__list")
           DivElement(classCss="tooltips__item")
             DivElement(classCss="tooltips__title, title")

@@ -4,10 +4,6 @@
       DivElement(classCss="col, col_6, col_mob-12")
         DivElement(classCss="footer__copyright, copyright")
           span(class="copyright__text") {{data.text}}
-      DivElement(classCss="col, col_6, col_mob-12")
-        DivElement(classCss="footer__photographer, photographer, text_m-end")
-          span(class="photographer__text") {{data.picText}}
-
 
 </template>
 

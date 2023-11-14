@@ -144,7 +144,7 @@ class MessagesController extends Controller
                 }else if($folder->users == null && $folder->delete == 0 && $folder->folder_name != 'Личное'){
                     $usersData = $contacts;
                 }
-//                dd($usersData);
+
                 $userCountMessages = 0;
 
                 foreach ($usersData as $item) {
@@ -187,7 +187,7 @@ class MessagesController extends Controller
             }
         }
 
-//        dd($userFolders);
+
 
 
         $messenger_color = Auth::user()->messenger_color;
@@ -301,7 +301,7 @@ class MessagesController extends Controller
                 ]) : null,
             ]);
 
-            $messageData = $message; //Chatify::parseMessage($message);
+            $messageData = $message;
         }
         $view = '';
         if(!empty($messageData)){
@@ -369,11 +369,9 @@ class MessagesController extends Controller
 
             $messages[] = $dataMessage;
 
-            dd($messages);
+            $key = $this->formatDateToObject($messageData->created_at->format('Y-m-d H:i:s'));
 
-
-
-            $view = View::make('Chatify::layouts.listItem',['get' => 'messageList','key'=>$messageData->created_at->format('Y-m-d'), 'messages'=> $messages] )->render();
+            $view = View::make('Chatify::layouts.listItem',['get' => 'messageList','key'=>$key['date'], 'messages'=> $messages] )->render();
 
         }
 
@@ -1217,4 +1215,18 @@ class MessagesController extends Controller
         }
         return $result;
     }
+
+    private function formatDateToObject($dateString) {
+        $messageDate = Carbon::parse($dateString);
+        $now = Carbon::now();
+
+        if ($messageDate->isSameDay($now)) {
+            return ['date' => 'Сегодня', 'time' => $messageDate->format('H:i')];
+        } elseif ($messageDate->isYesterday()) {
+            return ['date' => 'Вчера', 'time' => $messageDate->format('H:i')];
+        } else {
+            return ['date' => explode(' ', $dateString)[0], 'time' => $messageDate->format('H:i')];
+        }
+    }
+
 }

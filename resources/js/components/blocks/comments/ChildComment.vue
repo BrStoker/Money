@@ -20,19 +20,19 @@
               SpanElement(classCss="title__text") {{getDate(comment)}}
       DivElement(classCss="wysiwyg")
         p(v-html="comment.text")
-      DivElement(classCss="tooltips")
+      DivElement(classCss="tooltips" v-if="user.auth")
         DivElement(classCss="tooltips__list")
           DivElement(classCss="tooltips__item")
             DivElement(classCss="tooltips__title, title")
-              LinkElement(classCss="title__text" href="#" :onclick="()=>addAnswer(comment)" v-if="user.auth") {{'Ответить'}}
+              LinkElement(classCss="title__text" href="#" :onclick="()=>addAnswer(comment)") {{'Ответить'}}
           DivElement(classCss="tooltips__item, tooltips__item_dinamic")
-            DivElement(classCss="tooltips__item" v-if="user.auth")
+            DivElement(classCss="tooltips__item")
               DivElement(classCss="tooltips__media" :onclick="()=> setLike()" :class="{'favorite': isLiked}")
                 SvgElement(:image="images.like")
               DivElement(classCss="tooltips__title, title" :class="commentNegative()")
                 SpanElement(classCss="title__text") {{countLikes}}
           DivElement(classCss="tooltips__item, tooltips__item_dinamic")
-            DivElement(classCss="tooltips__item" v-if="user.auth")
+            DivElement(classCss="tooltips__item")
               DivElement(classCss="tooltips__media" :onclick="()=>setDisLike()")
                 SvgElement(:image="images.dislike")
               DivElement(classCss="tooltips__title, title" :class="commentNegative()")

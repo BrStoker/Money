@@ -32,6 +32,7 @@ export default {
                     classCss: 'form-item',
                     name: 'image',
                     value: false,
+                    needAuth: false,
                     checkboxBefore: '/image/svg/sprite.svg#checkboxBefore',
                     checkboxAfter: '/image/svg/sprite.svg#checkboxAfter',
                 },
@@ -42,6 +43,7 @@ export default {
                     classCss: 'form-item, mb-0',
                     name: 'unsubscibe',
                     value: false,
+                    needAuth: true,
                     checkboxBefore: '/image/svg/sprite.svg#checkboxBefore',
                     checkboxAfter: '/image/svg/sprite.svg#checkboxAfter',
                 },
@@ -61,6 +63,7 @@ export default {
                     classCss: 'form-item',
                     name: 'activity',
                     value: '24h',
+                    needAuth: false,
                     radioBefore: '/image/svg/sprite.svg#radioBefore',
                     radioAfter: '/image/svg/sprite.svg#radioAfter'
                 },
@@ -71,6 +74,7 @@ export default {
                     classCss: 'form-item',
                     name: 'activity',
                     value: '7d',
+                    needAuth: false,
                     radioBefore: '/image/svg/sprite.svg#radioBefore',
                     radioAfter: '/image/svg/sprite.svg#radioAfter'
                 },
@@ -81,6 +85,7 @@ export default {
                     classCss: 'form-item, mb-0',
                     name: 'activity',
                     value: 'all',
+                    needAuth: false,
                     radioBefore: '/image/svg/sprite.svg#radioBefore',
                     radioAfter: '/image/svg/sprite.svg#radioAfter'
                 },
@@ -99,6 +104,7 @@ export default {
                     classCss: 'form-item',
                     name: 'country_id',
                     value: '',
+                    needAuth: false,
                     options:[],
                     settings: {'width': '100%'}
                 },
@@ -109,6 +115,7 @@ export default {
                     classCss: 'form-item, mb-0',
                     name: 'city_id',
                     value: '',
+                    needAuth: false,
                     options:[],
                     settings: {'width': '100%'}
                 },
@@ -128,6 +135,7 @@ export default {
                     classCss: 'form-item',
                     name: 'gender',
                     value: 1,
+                    needAuth: false,
                     radioBefore: '/image/svg/sprite.svg#radioBefore',
                     radioAfter: '/image/svg/sprite.svg#radioAfter'
                 },
@@ -138,6 +146,7 @@ export default {
                     classCss: 'form-item',
                     name: 'gender',
                     value: 2,
+                    needAuth: false,
                     radioBefore: '/image/svg/sprite.svg#radioBefore',
                     radioAfter: '/image/svg/sprite.svg#radioAfter'
                 },
@@ -148,6 +157,7 @@ export default {
                     classCss: 'form-item, mb-0',
                     name: 'gender',
                     value: 0,
+                    needAuth: false,
                     radioBefore: '/image/svg/sprite.svg#radioBefore',
                     radioAfter: '/image/svg/sprite.svg#radioAfter'
                 },
@@ -165,6 +175,7 @@ export default {
                     classParent: '',
                     placeholder: 'Минимальный возраст',
                     name: 'age_min',
+                    needAuth: false,
                     value: '',
                     options:[
                         {
@@ -188,6 +199,7 @@ export default {
                     classParent: '',
                     placeholder: 'Максимальный возраст',
                     name: 'age_max',
+                    needAuth: false,
                     value: '',
                     options:[
                         {

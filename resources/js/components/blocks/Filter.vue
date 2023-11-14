@@ -25,7 +25,9 @@
                           Span(classCss="btn, btn_tertiary")
                             Span(classCss="btn__text") {{'Интересы'}}
                             Span(classCss="btn__label") {{appData.countNishes}}
-                    FormInput(:data="step" :onchange="changeFilter")
+                    EmptyElement
+                      EmptyElement(v-for="(input, index) in step.inputs" :key="index")
+                        InputElement(:data="input" :step="step" :onchange="changeFilter" v-if="userAuth(input)")
                 DivElement(classCss="col, col_12")
                   DivElement(classCss="form-item, mb-0")
                     DivElement(classCss="form-item__main")
@@ -49,6 +51,7 @@
     import FormInput from '@/js/components/elements/FormInput'
     import MethodsFilter from '@/js/methods/blocks/Filter'
     import HttpClass from '@/js/classes/Http'
+    import EmptyElement from '@/js/components/elements/Empty'
 
 
 
@@ -84,6 +87,13 @@
           },
           addInterests(){
             console.log(11111)
+          },
+          userAuth(input){
+            if(input.needAuth){
+              return this.$store.state.data.app.user.auth == true;
+            }else{
+              return true
+            }
           }
         },
       components: {
@@ -98,7 +108,8 @@
         Label,
         SvgElement,
         Select2,
-        FormInput
+        FormInput,
+        EmptyElement
       },
 
       mounted() {

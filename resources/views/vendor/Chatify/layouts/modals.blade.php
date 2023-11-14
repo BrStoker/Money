@@ -462,14 +462,16 @@
                         <fieldset>
                             <div class="form__group group form__group_second">
                                 <div class="group__header">
-                                    <div class="form-item__main">
-                                        <div class="form-item__field">
-                                            <input type="text" id="search" class="form-item__input" placeholder="Поиск" oninput="searchUserInModal(event)"/>
-                                        </div>
-                                        <div class="form-item__ico">
-                                            <svg>
-                                                <use xlink:href="/image/svg/sprite.svg#search"></use>
-                                            </svg>
+                                    <div class="form-item form-item_before mb-0">
+                                        <div class="form-item__main">
+                                            <div class="form-item__field">
+                                                <input type="text" id="search" class="form-item__input" placeholder="Поиск" oninput="searchUserInModal(event)"/>
+                                            </div>
+                                            <div class="form-item__ico">
+                                                <svg>
+                                                    <use xlink:href="/image/svg/sprite.svg#search"></use>
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
