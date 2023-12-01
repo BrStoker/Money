@@ -3041,6 +3041,7 @@ table th {
   color: rgba(8, 23, 14, 0.8);
   font-size: 0.75rem;
   line-height: 1rem;
+  cursor: pointer;
 }
 
 .banner {
@@ -5395,3 +5396,96 @@ input[type="number"]::-webkit-outer-spin-button {
   margin-left: 0.7rem;
 }
 
+.tooltips__media{
+  cursor: pointer;
+}
+
+.tabs__header .dialog__actions {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.tabs__header .dialog__actions .actions__list {
+  display: flex;
+}
+
+.tabs__header .dialog__actions .actions__item:not(:last-child) {
+  margin-right: 0.125rem;
+}
+
+.tabs__header .dialog__actions .actions__item {
+  position: relative;
+}
+
+.tabs__header .dialog__actions .actions__item:hover .actions__preview, .tabs__header .dialog__actions .actions__item.actions__item_active .actions__preview {
+  background-color: rgba(8, 23, 14, 0.05);
+}
+
+.tabs__header .dialog__actions .actions__preview {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  z-index: 2;
+  background-color: rgba(8, 23, 14, 0);
+  display: flex;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.4s ease-in-out;
+}
+
+.tabs__header .dialog__actions .actions__preview img, .tabs__header .dialog__actions .actions__preview svg {
+  width: 1rem;
+  height: 1rem;
+  fill: rgb(255, 255, 255);
+}
+
+.tabs__header .dialog__actions .actions__item:hover .actions__dropdown, .tabs__header .dialog__actions .actions__item.actions__item_active .actions__dropdown {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tabs__header .dialog__actions .actions__dropdown {
+  background-color: rgb(255, 255, 255);
+  border-radius: 0.75rem;
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  min-width: 15rem;
+  right: 0;
+  opacity: 0;
+  visibility: hidden;
+  overflow: hidden;
+  overflow-y: auto;
+  z-index: 3;
+  box-shadow: 0 4px 16px rgba(87, 191, 171, 0.2);
+  transition: all 0.4s ease-in-out;
+}
+
+.tabs__header .dialog__actions .actions__dropdown .dropdown__list {
+  display: flex;
+  flex-direction: column;
+}
+.dialog__header .dialog__actions .actions__dropdown .dropdown__list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.tabs__header .dialog__actions .actions__dropdown .dropdown__item:hover .dropdown__link {
+  color: rgb(255, 255, 255);
+  background-color: rgb(11, 118, 54);
+}
+.tabs__header .dialog__actions .actions__dropdown .dropdown__item:hover .dropdown__link.color_red {
+  color: rgb(255, 255, 255) !important;
+}
+
+.tabs__header .dialog__actions .actions__dropdown .dropdown__item:hover .dropdown__link {
+  color: rgb(255, 255, 255);
+  background-color: rgb(11, 118, 54);
+}

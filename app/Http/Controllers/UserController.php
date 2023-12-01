@@ -474,7 +474,6 @@
 
                 $currentUser = null;
                 $currentUserModel = parent::currentUser(true);
-//                dd($currentUserModel);
                 if($currentUserModel) {
                     $currentUser = $currentUserModel->toArray();
                 }
@@ -563,6 +562,83 @@
 
                         }
                     }
+
+                    $userCourses = \App\Models\Courses::where('user_id', $user['data']['id'])->get();
+
+                    if($userCourses){
+
+                        $userCourses->transform(function ($record) {
+                            $user_courses = \App\Models\User::where('id', $record->user_id)->first();
+                            if($user_courses){
+                                $properties = $this->getEntityFields($user_courses, 'user', '\App\Models\UserField', '\App\Models\UserFieldGroup');
+                                $fieldsInline = [ 'signature' ];
+                                $signature = '';
+                                if(isset($properties) == true && empty($properties) == false && is_array($properties) == true){
+                                    foreach($properties as $group) {
+
+                                        if(isset($group['fields']) == true && empty($group['fields']) == false && is_array($group['fields']) == true) {
+
+                                            foreach($group['fields'] as $field) {
+
+                                                if(isset($field['value'])){
+                                                    if(in_array($field['slug'], $fieldsInline) == true) {
+
+                                                        $signature = $field['value'];
+
+                                                    }
+
+                                                }
+
+                                            }
+
+
+                                        }
+
+                                    }
+                                }
+                                $user_courses = [
+                                    'id' => $user_courses->id,
+                                    'first_name' => $user_courses->first_name,
+                                    'last_name' => $user_courses->last_name,
+                                    'image' => $user_courses->image ? '/storage/' . $user_courses->image : '/image/avatar.png',
+                                    'signature' => $signature
+                                ];
+
+
+                                $courseType = \App\Models\CoursesType::whereIn('id', $record->courses_type_id)->get();
+
+                                if($courseType){
+                                    $courseType->transform(function ($type) {
+                                        return [
+                                            'title' => $type->title
+                                        ];
+
+                                    });
+                                }
+
+                                $courseSubject = \App\Models\CoursesSubject::where('id', $record->courses_subject_id)->first();
+                                $countComm = \App\Models\CoursesComment::where('courses_id', $record->id)->get()->count();
+                                return [
+                                    'id' => $record->id,
+                                    'title' => $record->title,
+                                    'preview' => $record->preview,
+                                    'courseType' => $courseType,
+                                    'courseSubject' => $courseSubject->title,
+                                    'countComm' => $countComm,
+                                    'image' => $record->image,
+                                    'price' => $record->price,
+                                    'courses_user' => $user_courses,
+                                    'slug' => $record->slug
+
+                                ];
+                            }else{
+                                return [];
+                            }
+                        });
+
+
+                    }
+
 
                     $userFavorites = ArticleFavorite::where('user_id', $user['data']['id'])->get();
 
@@ -673,7 +749,7 @@
                         ]);
                     }
 
-                    $user_detail = array_merge($user['data'],['favorite' => $userFavorites]);
+                    $user_detail = array_merge($user['data'],['favorite' => $userFavorites, 'courses' => $userCourses]);
 
                     return view('user.detail', [
                         'data' => json_encode([
@@ -699,7 +775,7 @@
 
             if($request->method() == 'POST'){
                 $title = $request->input('title');
-                if (\App\Models\ArticleGroup::where('title', trim($title))->exists()) {
+                if (\App\Models\Article::where('title', trim($title))->exists()) {
                     return response()->json(['code' => 1, 'desc' => 'Такой заголовок уже существует. Укажите другой.']);
                 }
                 $validatorData = new \App\Http\Requests\ArticleRequest();
@@ -716,7 +792,7 @@
                 if (!$validator->fails()){
                     $user = parent::currentUser(true);
 
-                    $request_data = $validator->safe()->only(['slug', 'status', 'article_group_ids', 'user_id', 'image', 'title', 'preview', 'detail_text', 'user_id']);
+                    $request_data = $validator->safe()->only(['slug', 'status', 'article_group_ids', 'user_id', 'image', 'title', 'preview', 'detail_text']);
 
                     if($request->image){
                         $request_data['image'] = $request->image;

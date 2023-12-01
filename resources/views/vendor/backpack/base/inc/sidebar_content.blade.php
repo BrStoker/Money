@@ -8,6 +8,8 @@
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('article-group') }}"><i class="nav-icon la la-question"></i> Категории статей</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('article') }}"><i class="nav-icon la la-question"></i> Статьи</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('article-comment') }}"><i class="nav-icon la la-question"></i>Комментарии статей</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('courses') }}"><i class="nav-icon la la-question"></i>Курсы</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('courses-comment') }}"><i class="nav-icon la la-question"></i>Коментарии к курсам</a></li>
 
 <li class="nav-item nav-dropdown">
   <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-group"></i> Настройки</a>
@@ -20,6 +22,15 @@
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('user-field-group') }}"><i class="nav-icon la la-question"></i> Группы свойств пользователей</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('user-field') }}"><i class="nav-icon la la-question"></i> Свойства пользователей</a></li>
       </ul>
+    </li>
+
+    <li class="nav-item nav-dropdown">
+      <a href="#" class="nav-link nav-dropdown-toggle"><i class="nav-icon la la-group"></i> Курсы</a>
+      <ul class="nav-dropdown-items">
+        <li class="nav-item"><a href="{{ backpack_url('courses-type') }}" class="nav-link"><i class="nav-icon la la-question"></i> Типы курсов</a></li>
+        <li class="nav-item"><a href="{{ backpack_url('courses-subject') }}" class="nav-link"><i class="nav-icon la la-question"></i> Тематика курсов</a></li>
+      </ul>
+
     </li>
 
     <li class="nav-item nav-dropdown">

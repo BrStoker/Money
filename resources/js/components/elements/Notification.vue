@@ -10,7 +10,6 @@ import DivElement from '@/js/components/elements/Div'
 
 export default {
   props: {
-    message: String,
     duration: {
       type: Number,
       default: 5000
@@ -18,7 +17,8 @@ export default {
   },
   data() {
     return {
-      show: false
+      show: false,
+      message: this.$store.state.data.app.notificationMessage
     };
   },
   components:{
@@ -27,9 +27,9 @@ export default {
   methods: {
     showNotification() {
       this.show = true;
-      setTimeout(() => {
-        this.show = false;
-      }, this.duration);
+      // setTimeout(() => {
+      //   this.show = false;
+      // }, this.duration);
     }
   },
   watch: {
@@ -37,6 +37,7 @@ export default {
       immediate: true,
       handler(newValue) {
         if (newValue) {
+          console.log('Notification', newValue)
           this.showNotification();
         }
       }

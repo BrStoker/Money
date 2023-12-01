@@ -555,4 +555,69 @@ class Controller extends BaseController
 
     }
 
+    public function getAuthorInfo($user_id){
+
+        $user = \App\Models\User::where('id', $user_id)->first();
+        $userData = [];
+        if($user){
+
+            $userProperties = $this->getEntityFields($user, 'user', '\App\Models\UserField', '\App\Models\UserFieldGroup');
+            $fieldsInline = ['signature'];
+
+            $signature = '';
+
+            if(isset($userProperties) == true && empty($userProperties) == false && is_array($userProperties) == true) {
+                foreach($userProperties as $group) {
+                    if(isset($group['fields']) == true && empty($group['fields']) == false && is_array($group['fields']) == true) {
+                        foreach($group['fields'] as $field) {
+                            if(in_array($field['slug'], $fieldsInline) == true) {
+                                if(isset($field['value'])){
+                                    $signature = $field['value'];
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+            $fieldsInline = ['description'];
+            $description = '';
+            if(isset($userProperties) == true && empty($userProperties) == false && is_array($userProperties) == true) {
+                foreach($userProperties as $group) {
+                    if(isset($group['fields']) == true && empty($group['fields']) == false && is_array($group['fields']) == true) {
+                        foreach($group['fields'] as $field) {
+                            if(in_array($field['slug'], $fieldsInline) == true) {
+                                if(isset($field['value'])){
+                                    $description = $field['value'];
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            $userData = [
+                'id' => $user->id,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'image' => $user->image,
+                'signature' => $signature,
+                'description' => $description,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'view' => $user->view,
+                'score' => $user->score,
+                'subscribe' => $user->subscribe
+            ];
+
+        }
+
+        return $userData;
+
+
+    }
+
+
 }

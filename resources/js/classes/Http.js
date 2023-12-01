@@ -36,7 +36,16 @@ export default {
 
                                 _.forIn(item.inputs, function(subItem){
 
-                                    inputs.push(subItem);
+
+
+                                    if(_.has(subItem, 'inputs') == true){
+                                        for (let key in subItem.inputs){
+                                            inputs.push(subItem.inputs[key])
+                                        }
+                                    }else{
+                                        inputs.push(subItem)
+                                    }
+
 
                                 })
 
@@ -50,9 +59,11 @@ export default {
 
                 inputs = schema.inputs
 
+
             }
 
             if(_.size(inputs) > 0) {
+
                 _.forEach(inputs, function(item) {
                     if(_.has(item,'name') == true && _.has(item, 'value')) {
                         if(_.has(item,'send') == true && item.send == false){

@@ -65,6 +65,9 @@ export default {
         },
         countNishes: 0,
         articles: [],
+        courses: [],
+        courseTypes: [],
+        courseSubject: [],
         user_detail: {
             first_name: '',
             last_name: '',
@@ -89,7 +92,8 @@ export default {
             description: '',
             userInterests: [],
             view: '',
-            favorite: []
+            favorite: [],
+            courses: []
         },
         countries: [],
         cities: [],
@@ -135,6 +139,19 @@ export default {
                 })
             }
         },
+
+        updateCourses(state, value){
+
+            if(state.data.app.courses.length > 0){
+                state.data.app.courses = []
+            }
+
+            if(_.isObject(value) == true && _.size(value) > 0){
+                _.forIn(value, (subValue, key) => {
+                    state.data.app.courses.push(subValue)
+                })
+            }
+        },
         updateFilterOptions(state, value){
             if(_.isObject(value) == true && _.size(value) > 0){
                 _.forIn(value, (subValue, key)=>{
@@ -173,6 +190,7 @@ export default {
         },
         updateNotificationMessage(state, message){
 
+            console.log('updateNotificationMessage', message)
             if(state.data.app.notificationMessage.length != 0){
 
                 state.data.app.notificationMessage = ''

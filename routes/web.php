@@ -46,6 +46,11 @@ Route::controller(\App\Http\Controllers\UserController::class)->group(function (
 
     });
 
+    Route::controller(\App\Http\Controllers\InstrumentsController::class)->group(function () {
+        Route::get('/instruments', 'index')->name('instruments');
+
+    });
+
     Route::controller(\App\Http\Controllers\PeopleController::class)->group(function () {
         Route::get('/people', 'index')->name('people');
         Route::post('/people/search', 'search')->name('people-search');

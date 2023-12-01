@@ -1,5 +1,7 @@
 <template lang="pug">
 select(v-if="data.name == 'country_id'" :value="data.value" id="country_id" @choice="change" @change="onchange")
+select(v-else-if="data.name == 'courses_type_id'" id="courses_type_id" :value="data.value" @search="fetchOptions" @change="onchange" multiple='true')
+select(v-else-if="data.name == 'courses_subject_id'" id="courses_subject_id" :value="data.value" @search="fetchOptions" @choice="change" @change="onchange")
 select(v-else-if="cities" id="city_id" :value="data.value" @search="fetchOptions" @choice="change" @change="onchange")
 
 </template>
@@ -22,11 +24,15 @@ select(v-else-if="cities" id="city_id" :value="data.value" @search="fetchOptions
 
       return{
 				countries:  this.$store.state.data.app.countries,
+        coursesTypes: this.$store.state.data.app.courseTypes,
+        coursesSubject: this.$store.state.data.app.courseSubject,
         myValue: '',
         city: this.cities,
         tempChoices: {
           country: undefined,
-          city: undefined
+          city: undefined,
+          courses_type_id: undefined,
+          courses_subject_id: undefined
         },
         settings: '{width: -webkit-fill-available}',
 				key: 0,
@@ -56,6 +62,7 @@ select(v-else-if="cities" id="city_id" :value="data.value" @search="fetchOptions
       change(e){
 
         this.data.value = e.detail.choice.value
+
 
       },
 
@@ -168,7 +175,101 @@ select(v-else-if="cities" id="city_id" :value="data.value" @search="fetchOptions
             this.initCity(event.target.value)
           })
 
+        }else if (this.data.name == 'courses_type_id'){
+
+          const courses_type_id = document.querySelector('#courses_type_id')
+
+          let types = this.coursesTypes
+          let items = []
+          let value = null
+          let label = 'Укажите значение'
+          let obj = {value, label}
+          obj.selected = true
+          obj.hidden = true
+          items.push(obj)
+          for(let type in types){
+            let value = types[type].value.toString()
+            let label = types[type].label.toString()
+            let obj = {value, label}
+            if(types[type].value == this.data.value){
+              obj.selected = true
+            }
+            items.push(obj)
+          }
+
+          if(this.tempChoices.courses_type_id == undefined) {
+
+            this.tempChoices.courses_type_id = new Choices(courses_type_id,{
+              silent: true,
+              choices: items,
+              removeItems: true,
+              removeItemButton: true,
+              noChoicesText: 'Ничего не выбрано',
+              noResultsText: 'Ничего не найдено',
+              placeholder: true,
+              placeholderValue: 'Укажите тип курса',
+              itemSelectText: '',
+              loadingText: 'Загрузка...',
+              allowHTML: false,
+
+            })
+
+          }
+
+          courses_type_id.addEventListener(
+              'addItem',
+              (event)=> {
+                this.data.value = this.tempChoices.courses_type_id.getValue(true)
+              },
+              false,
+          );
+          courses_type_id.addEventListener('removeItem',(event)=>{
+            this.data.value = this.tempChoices.courses_type_id.getValue(true)
+          },false)
+        }else if(this.data.name == 'courses_subject_id'){
+
+          const courses_subject_id = document.querySelector('#courses_subject_id')
+
+          let coursesSubject = this.coursesSubject
+          let items = []
+          let value = null
+          let label = 'Укажите значение'
+          let obj = {value, label}
+          obj.selected = true
+          obj.hidden = true
+          items.push(obj)
+          for(let subject in coursesSubject){
+            let value = coursesSubject[subject].value.toString()
+            let label = coursesSubject[subject].label.toString()
+            let obj = {value, label}
+            if(coursesSubject[subject].value == this.data.value){
+              obj.selected = true
+            }
+            items.push(obj)
+          }
+          if(this.tempChoices.courses_subject_id == undefined) {
+
+            this.tempChoices.courses_subject_id = new Choices(courses_subject_id,{
+              silent: true,
+              choices: items,
+              removeItems: true,
+              removeItemButton: true,
+              noChoicesText: 'Ничего не выбрано',
+              noResultsText: 'Ничего не найдено',
+              placeholder: true,
+              placeholderValue: 'Укажите тематику',
+              itemSelectText: '',
+              loadingText: 'Загрузка...',
+              allowHTML: false,
+
+            })
+
+          }
+          courses_subject_id.addEventListener('removeItem', (event)=>{
+            this.data.value = this.tempChoices.courses_subject_id.getValue(true)
+          })
         }
+
 
       },
 
@@ -251,6 +352,10 @@ select(v-else-if="cities" id="city_id" :value="data.value" @search="fetchOptions
 <style lang="scss">
 .choices{
   margin-top: 16px;
+}
+.choices__list--multiple .choices__item{
+  background-color: rgb(10, 123, 55);
+  border-color: rgb(10, 123, 55);
 }
 
 </style>

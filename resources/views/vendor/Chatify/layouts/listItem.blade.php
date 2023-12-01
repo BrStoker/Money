@@ -489,6 +489,19 @@
     </div>
 @endif
 
+@if($get == 'chat_settings')
+    <div class="form-item">
+        <div class="form-item__main">
+            <div class="toggle">
+                <label class="toggle__label">
+                    <input type="checkbox" class="toggle__input" {{ $setting['value'] == 1 ? 'checked' : '' }} name="{{$setting['name']}}" onchange="setSettingsChat(event)">
+                    <span class="toggle__text">{{$setting['title']}}</span>
+                </label>
+            </div>
+        </div>
+    </div>
+@endif
+
 @if($get == 'addFolder')
     <div class="tabs__item tabs__item_second modal-init" data-modalname="modal__layout_folder-create">
         <div class="tabs__media">
@@ -764,6 +777,371 @@
                     <span class="title__text">Трафик</span>
                 </div>
             </a>
+        </div>
+    </div>
+@endif
+
+{{----------------------- list groups -------------------- --}}
+@if($get == 'listGroups')
+
+    <div class="preview__item {{$id == $group['id'] ? 'preview__item_active' : ''}}" data-chat_id="{{$group['id']}}">
+        <div class="preview__header">
+            <img src="{{$group['image']}}" alt="">
+        </div>
+        <div class="preview__main">
+            <div class="preview__title title">
+                <span class="title__text h4">{{$group['name']}}</span>
+            </div>
+            @if($group['lastMessage'] != null)
+                <div class="preview__content">
+                    <div class="preview__icons icons">
+                        <div class="icons__list">
+                            @if($group['lastMessage']['body'] != null)
+                                <div class="icons__item">
+                                    <svg>
+                                        <use xlink:href="/image/svg/sprite.svg#check"></use>
+                                    </svg>
+                                </div>
+                            @elseif($group['lastMessage']['audio'] != null)
+                                <div class="icons__item">
+                                    <svg>
+                                        <use xlink:href="/image/svg/sprite.svg#mic"></use>
+                                    </svg>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                    @if($group['lastMessage']['image'])
+                        <div class="preview__picture">
+                            @if($group['lastMessage'] != null)
+                                {!! $group['lastMessage']['image'] !!}
+                            @endif
+                        </div>
+                    @endif
+                    <div class="preview__subtitle subtitle">
+                        <span class="subtitle__text">
+                            @if($group['lastMessage']['body'] != null)
+                                @if($group['countMessages'] != 0)
+                                    <span class="chat__coincidence">{{ Str::limit(htmlspecialchars($group['lastMessage']['body']), 15, '...') }}</span>
+                                @else
+                                    {{ Str::limit(htmlspecialchars($group['lastMessage']['body']), 15, '...') }}
+                                @endif
+                            @elseif($group['lastMessage']['attachment'] != null)
+                                @if($group['countMessages'] != 0)
+                                    <span class="chat__coincidence">Вложение</span>
+                                @else
+                                    Вложение
+                                @endif
+                            @else
+                                @if($group['countMessages'] != 0)
+                                    <span class="chat__coincidence">Голосовое сообщение</span>
+                                @else
+                                    Голосовое сообщение
+                                @endif
+                            @endif
+                        </span>
+                    </div>
+                </div>
+            @endif
+        </div>
+        <div class="preview__footer">
+            @if($group['lastMessage'])
+                <div class="preview__date date">
+                    <span class="date__text">{{ \Carbon\Carbon::parse($group['lastMessage']['created_at'])->format('H:i') }}</span>
+                </div>
+            @endif
+            @if($group['countMessages'] != 0)
+                <div class="preview__messages messages">
+                    <span class="messages__text">{{$group['countMessages']}}</span>
+                </div>
+            @endif
+
+        </div>
+
+    </div>
+
+@endif
+
+@if($get == 'invite')
+
+    <div class="preview__item" data-invite="true">
+        <div class="preview__header">
+            <img src="/image/channel.png" alt="">
+        </div>
+        <div class="preview__main">
+            <div class="preview__title title">
+                <span class="title__text h4">Приглашения</span>
+            </div>
+            <div class="preview__content">
+                <div class="preview__subtitle subtitle">
+                    @foreach($invites as $key=>$invite)
+                        <span class="subtitle__text">{{$invite['channel_name']}}</span>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        <div class="preview__footer">
+            <div class="preview__date date">
+                <span class="date__text">{{$lastInvite}}</span>
+            </div>
+            <div class="preview__messages messages">
+                <span class="messages__text">{{$countInvites}}</span>
+            </div>
+        </div>
+    </div>
+
+@endif
+
+@if($get == 'listInvites')
+
+    <div class="chats__preview preview">
+        <div class="preview__list">
+            @foreach($invites as $invite)
+                <div class="preview__item" data-chat_id="{{$invite['id']}}">
+                    <div class="preview__header">
+                        <div class="form-item__field">
+                            <div class="custom-check">
+                                <label class="custom-check__label">
+                                    <input class="custom-check__input" type="checkbox" name="checkbox">
+                                    <svg class="custom-check__ico custom-check__ico_before">
+                                        <use xlink:href="/image/svg/sprite.svg#checkboxBefore"></use>
+                                    </svg>
+                                    <svg class="custom-check__ico custom-check__ico_after">
+                                        <use xlink:href="/image/svg/sprite.svg#checkboxAfter"></use>
+                                    </svg>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="preview__main d-flex">
+                        <img src="{{$invite['image']}}" alt="">
+                        <div class="preview__main">
+                            <div class="preview__title title">
+                                <span class="title__text h4">{{$invite['invite_name']}}</span>
+                            </div>
+                            <div class="preview__content">
+                                <div class="preview__subtitle subtitle">
+                                    <span class="subtitle__text">Приглашает </span> <a href="/id{{$invite['invited']['id']}}">{{$invite['invited']['first_name']}} {{$invite['invited']['last_name']}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="preview__footer d-flex">
+                        <div class="form-item">
+                            <div class="form-item__main">
+                                <div class="form-item__field">
+                                    <a class="btn btn_tertiary btn_tiny w-100" href="#" onclick="removeInvite({{$invite['id']}})">
+                                        <span class="button__text">Удалить</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-item">
+                            <div class="form-item__main">
+                                <div class="form-item__field">
+                                    <a class="btn w-100" href="#" onclick="aproveInvite({{$invite['id']}})">
+                                        <span class="button__text">Вступить</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            @endforeach
+
+        </div>
+    </div>
+
+@endif
+
+@if($get == 'headerInvite')
+    <div class="d-flex w-100 align-center" id="headerInvite">
+        <div class="col col_8 col_mob-12">
+            <div class="series no-wrap">
+                <div class="form-item mb-0">
+                    <div class="form-item__main">
+                        <div class="form-item__field">
+                            <div class="custom-check">
+                                <label class="custom-check__label">
+                                    <input class="custom-check__input" type="checkbox" name="selected">
+                                    <svg class="custom-check__ico custom-check__ico_before">
+                                        <use xlink:href="/image/svg/sprite.svg#checkboxBefore"></use>
+                                    </svg>
+                                    <svg class="custom-check__ico custom-check__ico_after">
+                                        <use xlink:href="/image/svg/sprite.svg#checkboxAfter"></use>
+                                    </svg>
+                                    <span class="custom-check__text">Выбрано (0)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col col_4 col_mob-12">
+            <div class="series no-wrap">
+                <div class="form-item">
+                    <div class="form-item__main">
+                        <div class="form-item__field">
+                            <a class="btn btn_tertiary btn_tiny w-100" href="#">
+                                <span class="button__text">Удалить</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-item">
+                    <div class="form-item__main">
+                        <div class="form-item__field">
+                            <a class="btn w-100" href="#">
+                                <span class="button__text">Вступить</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@endif
+
+{{----------------------- List Messages -------------------- --}}
+@if($get == 'messageListChat')
+    <div class="messages__group group">
+        @isset($key)
+            <div class="group__header">
+                <div class="group__title title">
+                    <span class="title__text">{{$key}}</span>
+                </div>
+            </div>
+        @endisset
+        <div class="group__main">
+            <div class="messages__list">
+                @foreach($messages as $message)
+                    <div class="messages__item {{$message['direction'] == 'sent' ? 'messages__item_primary': 'messages__item_secondary' }}" data-messageid="{{$message['id']}}">
+                        <div class="messages__layout">
+                            @if($message['forwarded'] == true)
+                                <div class="messages__header">
+                                    <div class="messages__preview preview">
+                                        @if($message['forward_from'] != null)
+                                            <div class="preview__attach attach">
+                                                <div class="attach__media">
+                                                    <img data-src="{{$message['forward_from']['image']}}" src="{{$message['forward_from']['image']}}" alt="image description">
+                                                </div>
+                                                <div class="attach__main">
+                                                    <div class="attach__title title">
+                                                        <span class="title__text">{{$message['forward_from']['first_name']}}</span>
+                                                    </div>
+                                                    <div class="attach__subtitle subtitle"></div>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endif
+                            @if($message['direction'] == 'reseived')
+                                    <div class="messages__header">
+                                        <div class="messages__preview preview">
+                                            <div class="preview__content">
+                                                <div class="wysiwyg mb-0">
+                                                    <p>{{$message['messageUserData']['first_name']}} {{$message['messageUserData']['last_name']}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            @endif
+                            @if($message['reply'] != null)
+                                <div class="messages__header" data-replyMessageId="{{$message['reply']['id']}}" onclick="focusMessageChat('{{$message['reply']['id']}}')">
+                                    <div class="messages__preview preview">
+                                        <div class="preview__content">
+                                            <div class="wysiwyg mb-0">
+                                                <p>{!! $message['reply']['reply_message'] !!}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                            <div class="messages__main">
+                                <div class="wysiwyg">
+                                    {!! $message['message'] !!}
+                                </div>
+                            </div>
+                            @if(!$message['delete'])
+                                <div class="messages__actions">
+                                    <div class="actions__list">
+                                        <div class="actions__item">
+                                            <div class="actions__preview">
+                                                <svg>
+                                                    <use xlink:href="/image/svg/sprite.svg#dots_second"></use>
+                                                </svg>
+                                            </div>
+                                            <div class="actions__dropdown dropdown">
+                                                <div class="dropdown__list">
+                                                    <div class="dropdown__item" data-msgid="{{$message['id']}}" onclick="replyMessageChat(event)">
+                                                        <a href="#" class="dropdown__link">Ответить</a>
+                                                    </div>
+                                                    <div class="dropdown__item modal-init" data-modalname="modal__layout_forward-message" data-msgid="{{$message['id']}}">
+                                                        <a href="#" class="dropdown__link">Переслать</a>
+                                                    </div>
+                                                    @if(!$message['isFile'])
+                                                        <div class="dropdown__item" data-msgid="{{$message['id']}}" onclick="copyMessageChat(event)">
+                                                            <a href="#" class="dropdown__link">Копировать</a>
+                                                        </div>
+                                                    @endif
+                                                    <div class="dropdown__item modal-init" data-modalname="modal__layout_сomplaint-folder" data-msgid="{{$message['id']}}">
+                                                        <a href="#" class="dropdown__link">Пожаловаться</a>
+                                                    </div>
+                                                    <div class="dropdown__item" data-msgid="{{$message['id']}}" onclick="deleteMessageChat(event)">
+                                                        <a href="#" class="dropdown__link">Удалить</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                            <div class="messages__footer footer">
+                                <div class="footer__data data">
+                                    <div class="data__list">
+                                        <div class="data__item">
+                                            <div class="data__title title">
+                                                <span class="title__text">{{$message['date']}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="messages__reactions reactions">
+                                <div class="reactions__list">
+                                    @if($message['reaction'])
+                                        @foreach($message['reaction'] as $reaction)
+                                            <div class="reactions__item">
+                                                <div class="reactions__media">
+                                                    {!! $reaction !!}
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <div class="messages__emotions emotions">
+                            <div class="emotions__preview">
+                                <div class="emotions__list">
+                                    <div class="emotions__item">
+                                        <div class="emotions__media" data-msgid="{{$message['id']}}" onclick="getReactionChat(event)">
+                                            <svg>
+                                                <use xlink:href="image/svg/sprite.svg#smile"></use>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </div>
 @endif

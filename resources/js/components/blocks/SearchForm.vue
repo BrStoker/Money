@@ -18,8 +18,11 @@ import InputElement from '@/js/components/elements/Input'
 import DivElement from '@/js/components/elements/Div'
 import Form from '@/js/components/elements/Form'
 import MethodsFilter from '@/js/methods/blocks/Filter'
+import MethodsFilterCourse from '@/js/methods/blocks/FilterCourses'
 import HttpMethods from '@/js/classes/Http'
 import FormInput from '@/js/components/elements/FormInput'
+
+
 
 
 export default {
@@ -28,6 +31,7 @@ export default {
       data: this.$store.state.data.search,
       schema: this.$store.state.schemas.search,
       schemas: this.$store.state.schemas.filter,
+      schemaCourse: this.$store.state.schemas.filterCourse
 
     }
   },
@@ -40,13 +44,20 @@ export default {
   methods:{
     ...MethodsFilter,
     ...HttpMethods,
+    ...MethodsFilterCourse,
     search(e){
       e.preventDefault()
+      if(window.location.pathname == '/courses'){
+        this.schemaCourse.steps[2].inputs[2].value = this.$store.state.schemas.search.steps[0].inputs[0].value
+        this.filterCourseList()
+      }else{
 
+        this.schemas.steps[6].value = this.$store.state.schemas.search.steps[0].inputs[0].value
 
-      this.schemas.steps[6].value = this.$store.state.schemas.search.steps[0].inputs[0].value
+        this.filterList()
 
-      this.filterList()
+      }
+
 
     },
     confirmSuccess(result){

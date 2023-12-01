@@ -62,6 +62,17 @@ class User extends Authenticatable
         return $this->hasMany(ChUsersSettings::class);
     }
 
+    public function groupChat(){
+
+        return $this->hasMany(ChGroupUsers::class);
+
+
+    }
+
+
+    public function chatGroupInvites(){
+        return $this->hasMany(ChGroupInvite::class);
+    }
     protected function getFioAttribute() {
 
         return implode(' ', [

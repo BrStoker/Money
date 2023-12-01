@@ -15,6 +15,8 @@ import SearchSchemas from '@/js/schemas/blocks/Search'
 import FilterSchemas from '@/js/schemas/blocks/Filter'
 import FilterStore from '@/js/store/blocks/Filter'
 
+import FilterCourse from '@/js/schemas/blocks/FilterCourse'
+
 import UserSocialStore from '@/js/store/pages/User/UserSocial'
 
 import SupportBlockSchemas from '@/js/schemas/blocks/Support'
@@ -25,6 +27,7 @@ import ForgotFormSchema from '@/js/schemas/blocks/Auth/Forgot'
 import ConfirmFormSchema from '@/js/schemas/blocks/Auth/Confirm'
 import InterestsRegSchema from '@/js/schemas/blocks/Interests'
 import AddArticleSchema from '@/js/schemas/pages/User/AddArticle'
+import AddCourseSchema from '@/js/schemas/pages/User/AddCourse'
 import CategoryArticleAddSchema from '@/js/schemas/blocks/Articles/ArticleCategory'
 import ShareSocialSchema from '@/js/schemas/blocks/User/ShareSocial'
 
@@ -37,6 +40,10 @@ import NotificationAllSchema from '@/js/schemas/pages/Notification/NotificationA
 import AnswerFieldNotificationComment from '@/js/schemas/pages/Notification/AnswerField'
 
 import ComplainSchema from '@/js/schemas/blocks/modals/ComplainForm'
+
+import UserTabsStore from '@/js/store/blocks/UserTabs'
+import InstrumentsTabSchema from '@/js/schemas/pages/User/instruments/instrumentsTab'
+import NumberGeneratorSchema from '@/js/schemas/pages/User/instruments/numberGenerator'
 
 
 import ModalLayoutStore from '@/js/store/blocks/ModalLayout'
@@ -64,8 +71,11 @@ const state  = {
         ...{ partners: PartnersSchema },
         ...{ notificationAll: NotificationAllSchema },
         ...{ answerField: AnswerFieldNotificationComment },
-        ...{ complainForm: ComplainSchema }
-
+        ...{ complainForm: ComplainSchema },
+        ...{ filterCourse: FilterCourse },
+        ...{ addCourse: AddCourseSchema },
+        ...{ instrumentsTab: InstrumentsTabSchema },
+        ...{ NumberGeneratorSchema: NumberGeneratorSchema }
     },
     data: {
         ...{ app: AppStore.state },
@@ -74,7 +84,8 @@ const state  = {
         ...{ footer: FooterStore.state },
         ...{ search: SearchStore.state },
         ...{ filter: FilterStore.state },
-        ...{ usersocial: UserSocialStore.state }
+        ...{ usersocial: UserSocialStore.state },
+        ...{ userTabs: UserTabsStore }
 
     }
 

@@ -20,7 +20,11 @@ export default{
         min_age: undefined,
         max_age: undefined,
         reason: undefined,
-        gender: undefined
+        gender: undefined,
+        grade_max: undefined,
+        grade_min: undefined,
+        price_max: undefined,
+        price_min: undefined
       }
     }
   },
@@ -66,6 +70,8 @@ export default{
                     allowHTML: false,
                     placeholder: true,
                     placeholderValue: this.data.placeholder,
+                    removeItems: true,
+                    removeItemButton: true,
                     itemSelectText: '',
                     choices: items
                   });
@@ -107,6 +113,8 @@ export default{
               noChoicesText: 'Ничего не найдено',
               allowHTML: false,
               placeholder: true,
+              removeItems: true,
+              removeItemButton: true,
               placeholderValue: this.data.placeholder,
               itemSelectText: '',
               choices: items
@@ -151,6 +159,8 @@ export default{
               noChoicesText: 'Ничего не найдено',
               allowHTML: false,
               placeholder: true,
+              removeItems: true,
+              removeItemButton: true,
               placeholderValue: this.data.placeholder,
               itemSelectText: '',
               choices: items
@@ -165,7 +175,7 @@ export default{
         }
 
       }
-      if(this.data.name == 'gender'){
+      if(this.data.name == 'grade_max'){
         var items = []
         var value = null
         var label = 'Укажите значение'
@@ -187,10 +197,104 @@ export default{
 
           }
         }
-        var selectGender = document.querySelector('.select[name="gender"]')
+        var selectGender = document.querySelector('.select[name="grade_max"]')
         if(selectGender){
-          if(this.simpleSelect.gender == undefined){
-            this.simpleSelect.gender = new Choices(selectGender, {
+          if(this.simpleSelect.grade_max == undefined){
+            this.simpleSelect.grade_max = new Choices(selectGender, {
+              searchEnabled: false,
+              noChoicesText: 'Ничего не найдено',
+              allowHTML: false,
+              placeholder: true,
+              removeItems: true,
+              removeItemButton: true,
+              placeholderValue: this.data.placeholder,
+              itemSelectText: '',
+              choices: items
+            });
+          }else{
+            this.simpleSelect.grade_max.clearChoices()
+            this.simpleSelect.grade_max.setChoices(items, 'value',
+                'label',
+                false,)
+          }
+
+        }
+
+
+      }
+      if(this.data.name == 'grade_min'){
+        var items = []
+        var value = null
+        var label = 'Укажите значение'
+        var obj = {value, label}
+        obj.selected = true
+        obj.hidden = true
+        items.push(obj)
+        for (let option in this.data.options){
+          if (this.data.options.hasOwnProperty(option)){
+            let value = this.data.options[option].value.toString()
+            let label = this.data.options[option].label.toString()
+            let obj = {value, label}
+            if(this.data.value){
+              if(this.data.options[option].value == this.data.value){
+                obj.selected = true
+              }
+            }
+            items.push(obj)
+
+          }
+        }
+        var selectGender = document.querySelector('.select[name="grade_min"]')
+        if(selectGender){
+          if(this.simpleSelect.grade_min == undefined){
+            this.simpleSelect.grade_min = new Choices(selectGender, {
+              searchEnabled: false,
+              noChoicesText: 'Ничего не найдено',
+              allowHTML: false,
+              placeholder: true,
+              removeItems: true,
+              removeItemButton: true,
+              placeholderValue: this.data.placeholder,
+              itemSelectText: '',
+              choices: items
+            });
+          }else{
+            this.simpleSelect.grade_min.clearChoices()
+            this.simpleSelect.grade_min.setChoices(items, 'value',
+                'label',
+                false,)
+          }
+
+        }
+
+
+      }
+      if(this.data.name == 'price_min'){
+        var items = []
+        var value = null
+        var label = 'Укажите значение'
+        var obj = {value, label}
+        obj.selected = true
+        obj.hidden = true
+        items.push(obj)
+        for (let option in this.data.options){
+          if (this.data.options.hasOwnProperty(option)){
+            let value = this.data.options[option].value.toString()
+            let label = this.data.options[option].label.toString()
+            let obj = {value, label}
+            if(this.data.value){
+              if(this.data.options[option].value == this.data.value){
+                obj.selected = true
+              }
+            }
+            items.push(obj)
+
+          }
+        }
+        var selectGender = document.querySelector('.select[name="price_min"]')
+        if(selectGender){
+          if(this.simpleSelect.price_min == undefined){
+            this.simpleSelect.price_min = new Choices(selectGender, {
               searchEnabled: false,
               noChoicesText: 'Ничего не найдено',
               allowHTML: false,
@@ -200,8 +304,53 @@ export default{
               choices: items
             });
           }else{
-            this.simpleSelect.gender.clearChoices()
-            this.simpleSelect.gender.setChoices(items, 'value',
+            this.simpleSelect.price_min.clearChoices()
+            this.simpleSelect.price_min.setChoices(items, 'value',
+                'label',
+                false,)
+          }
+
+        }
+
+
+      }
+      if(this.data.name == 'price_max'){
+        var items = []
+        var value = null
+        var label = 'Укажите значение'
+        var obj = {value, label}
+        obj.selected = true
+        obj.hidden = true
+        items.push(obj)
+        for (let option in this.data.options){
+          if (this.data.options.hasOwnProperty(option)){
+            let value = this.data.options[option].value.toString()
+            let label = this.data.options[option].label.toString()
+            let obj = {value, label}
+            if(this.data.value){
+              if(this.data.options[option].value == this.data.value){
+                obj.selected = true
+              }
+            }
+            items.push(obj)
+
+          }
+        }
+        var selectGender = document.querySelector('.select[name="price_max"]')
+        if(selectGender){
+          if(this.simpleSelect.price_max == undefined){
+            this.simpleSelect.price_max = new Choices(selectGender, {
+              searchEnabled: false,
+              noChoicesText: 'Ничего не найдено',
+              allowHTML: false,
+              placeholder: true,
+              placeholderValue: this.data.placeholder,
+              itemSelectText: '',
+              choices: items
+            });
+          }else{
+            this.simpleSelect.price_max.clearChoices()
+            this.simpleSelect.price_max.setChoices(items, 'value',
                 'label',
                 false,)
           }

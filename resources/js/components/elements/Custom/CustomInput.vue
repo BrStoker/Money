@@ -1,6 +1,6 @@
 <template lang="pug">
 EmptyElement
-    DivElement(classCss="form-item__main")
+    DivElement(:classCss="input.class")
       DivElement(classCss="form-item__field")
         input(:type="getType" v-model="input.value" :value="input.value" :name="input.name" :placeholder="input.placeholder" class="form-item__input" :class="{error: input.error}" :min="input.min" :max="input.max" :disabled="input.disabled" :pattern="input.regExp" :title="input.error" @input="onInputChange" :required="input.required")
       DivElement(classCss="form-item__ico" v-if="input.type == 'password' || input.name == 'fio'")

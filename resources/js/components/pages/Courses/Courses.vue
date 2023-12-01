@@ -13,22 +13,22 @@
                 DivElement(classCss="col, col_6, col_mob-12")
                   DivElement(classCss="wysiwyg")
                     h2 {{title}}
-                DivElement(classCss="col, col_6, col_mob-12")
+                DivElement(classCss="col, col_6, col_mob-12" v-if="user.auth")
                   DivElement(classCss="form-item, ml_m-auto")
                     DivElement(classCss="form-item__main")
                       DivElement(classCss="form-item__field")
-                        ButtonElement(:classCss="button.class" :type="button.type" :placeholder="button.title")
+                        ButtonElement(:classCss="button.class" :type="button.type" :placeholder="button.title" :onclick="()=>redirectToAddCourse()")
                           SpanElement(classCss="btn__text") {{button.title}}
             DivElement(classCss="section__main")
               DivElement(classCss="tabs")
                 DivElement(classCss="tabs__header")
                   DivElement(classCss="tabs__list")
-                    DivElement(v-for="(item, index) in tabs" classCss="tabs__item" :class="tabsItemClass(index)" :key="index")
+                    DivElement(v-for="(item, index) in tabs" classCss="tabs__item" :class="tabsItemClass(index)" :key="index" v-if="showTab(item)")
                       DivElement(classCss="tabs__title, title" :onclick="() => { item.click(index) }")
                         SpanElement(classCss="title__text") {{item.text}}
                 DivElement(classCss="tabs__body")
                   DivElement(classCss="tabs__list")
-                    DivElement(:key="index" v-for="(item, index) in tabs" :classCss="tabsItemClass(index, [ 'tabs__item' ])")
+                    DivElement(:key="index" v-for="(item, index) in tabs" :classCss="tabsItemClass(index, [ 'tabs__item' ])" v-if="showTab(item)")
                       template(v-if="index == 0")
                         CoursesAll
                       template(v-if="index == 1")
@@ -87,15 +87,18 @@
         tabs: [
           {
             text: 'Все',
-            click: this.handlerTab
+            click: this.handlerTab,
+            needAuth: false
           },
           {
             text: 'Популярные',
-            click: this.handlerTab
+            click: this.handlerTab,
+            needAuth: false
           },
           {
             text: 'Мои',
-            click: this.handlerTab
+            click: this.handlerTab,
+            needAuth: true
           }
         ],
 
@@ -112,6 +115,16 @@
       ...ComputedIndex,
       ...FeedEvents,
       ...ComputedFeed,
+      showTab(item){
+        if(item.needAuth){
+          return !!this.user.auth;
+        }else{
+          return true
+        }
+      },
+      redirectToAddCourse(){
+        window.location.href = '/courses/add'
+      }
       
     },
     created(){

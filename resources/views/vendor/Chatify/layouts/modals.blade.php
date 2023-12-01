@@ -505,8 +505,472 @@
             </div><!-- //form-item -->
         </div>
     </div>
-    {{-- ---------------------- Notification ---------------------- --}}
+    {{-- ---------------------- Notification ------------------------}}
     <div id="notification" class="notification">
         Это всплывающее уведомление
     </div>
+    {{-- ---------------------- group chat create ------------------------}}
+    <div class="modal__layout modal__layout_tiny modal__layout_groupchat-create">
+        <!-- modal action -->
+        <div class="modal__action action">
+            <svg>
+                <use xlink:href="/image/svg/sprite.svg#close"></use>
+            </svg>
+        </div>
+        <!-- modal main -->
+        <div class="modal__main">
+            <div class="wysiwyg">
+                <h3>Создать чат</h3>
+            </div>
+            <div class="formular">
+                <div class="formular__main">
+                    <form class="form" onsubmit="creategroupChat(event)">
+                        <fieldset>
+                            <div class="form__group group">
+                                <div class="form-item__main">
+                                    <div class="form-item__field">
+                                        <div class="form-item__avatar avatar">
+                                            <label class="label avatar__label">
+                                                <input type="file" name="groupChatImage" class="avatar__input" />
+                                                <img src="/image/no-image.png" alt="" class="avatar__img">
+                                                <span class="avatar__title">Изменить</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form__group group">
+                                <div class="group__header">
+                                    <div class="wysiwyg">
+                                        <h6>Название чата</h6>
+                                    </div>
+                                </div>
+                                <div class="group__main">
+                                    <div class="row">
+                                        <div class="col col_12">
+                                            <div class="form-item mb-0">
+                                                <div class="form-item__main">
+                                                    <div class="form-item__field">
+                                                        <input class="form-item__input" id="chat_name" name="chat_name" type="text" placeholder="Название чата">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form__group group">
+                                <div class="group__header">
+                                    <div class="wysiwyg">
+                                        <p>
+                                            <strong>Тип чата</strong>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="group__main">
+                                    <div class="form-item">
+                                        <div class="form-item__main">
+                                            <div class="form-item__field">
+                                                <div class="custom-check">
+                                                    <label class="label custom-check__label">
+                                                        <input type="radio" id="public" class="custom-check__input" name="chat_type" value="public">
+                                                        <svg class="custom-check__ico custom-check__ico_before">
+                                                            <use xlink:href="/image/svg/sprite.svg#radioBefore"></use>
+                                                        </svg>
+                                                        <svg class="custom-check__ico custom-check__ico_after">
+                                                            <use xlink:href="/image/svg/sprite.svg#radioAfter"></use>
+                                                        </svg>
+                                                        <span class="custom-check__text">Публичный</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-item">
+                                        <div class="form-item__main">
+                                            <div class="form-item__field">
+                                                <div class="custom-check">
+                                                    <label class="label custom-check__label">
+                                                        <input type="radio" id="private" class="custom-check__input" name="chat_type" value="private">
+                                                        <svg class="custom-check__ico custom-check__ico_before">
+                                                            <use xlink:href="/image/svg/sprite.svg#radioBefore"></use>
+                                                        </svg>
+                                                        <svg class="custom-check__ico custom-check__ico_after">
+                                                            <use xlink:href="/image/svg/sprite.svg#radioAfter"></use>
+                                                        </svg>
+                                                        <span class="custom-check__text">Приватный</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form__group group" id="slugGroup">
+                                <div class="group__header">
+                                    <div class="wysiwyg">
+                                        <p><strong>Уникальный адрес (для публичного)</strong></p>
+                                    </div>
+                                </div>
+                                <div class="group__main">
+                                    <input class="form-item__input" id="slug" name="slug" type="text" placeholder="Уникальный адрес">
+                                </div>
+                            </div>
+                            <div class="form__group group">
+                                <div class="group__header">
+                                    <div class="wysiwyg">
+                                        <p><strong>Описание (опционально)</strong></p>
+                                    </div>
+                                </div>
+                                <div class="group__main">
+                                    <textarea class="form-item__input" id="slug" name="slug" type="text" placeholder="Описание (опционально)"></textarea>
+                                </div>
+                            </div>
+                            <div class="form__group group">
+                                <div class="group__main">
+                                    <div class="form-item">
+                                        <div class="form-item__main">
+                                            <div class="form-item__field">
+                                                <button type="submit" class="btn w-100">
+                                                    <span class="btn__text">Пригласить участников</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    {{-- ---------------------- group chat invite users ------------------------}}
+    <div class="modal__layout modal__layout_tiny modal__layout_create-invite-group-chat" data-chat_id="0">
+        <!-- modal action -->
+        <div class="modal__action action">
+            <svg>
+                <use xlink:href="/image/svg/sprite.svg#close"></use>
+            </svg>
+        </div>
+        <!-- modal main -->
+        <div class="modal__main">
+            <div class="wysiwyg">
+                <h3 id="folder_name">Кого пригласить?</h3>
+            </div>
+            <div class="formular">
+                <div class="formular__main">
+                    <form action="post" class="form">
+                        <fieldset>
+                            <div class="form__group group form__group_second">
+                                <div class="group__header">
+                                    <div class="form-item form-item_before mb-0">
+                                        <div class="form-item__main">
+                                            <div class="form-item__field">
+                                                <input type="text" id="search" class="form-item__input" placeholder="Поиск" oninput="searchUserInModal(event)"/>
+                                            </div>
+                                            <div class="form-item__ico">
+                                                <svg>
+                                                    <use xlink:href="/image/svg/sprite.svg#search"></use>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="group__main" style="margin: 1.25rem;">
+                                    <div class="row">
+                                        <div class="wysiwyg" id="userList" style="height: 335px; overflow: auto;">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <div class="form-item">
+                <div class="form-item__main">
+                    <div class="form-item__field">
+                        <button type="submit" class="btn w-100" onclick="createInviteGroupChat(event)">
+                            <span class="btn__text">Отправить приглашения</span>
+                        </button>
+                    </div>
+                </div>
+            </div><!-- //form-item -->
+        </div>
+    </div>
+    {{-- ---------------------- group channel create ------------------------}}
+    <div class="modal__layout modal__layout_tiny modal__layout_group-chanell-create">
+        <!-- modal action -->
+        <div class="modal__action action">
+            <svg>
+                <use xlink:href="/image/svg/sprite.svg#close"></use>
+            </svg>
+        </div>
+        <!-- modal main -->
+        <div class="modal__main">
+            <div class="wysiwyg">
+                <h3>Создать чат</h3>
+            </div>
+            <div class="formular">
+                <div class="formular__main">
+                    <form class="form" onsubmit="creategroupChannel(event)">
+                        <fieldset>
+                            <div class="form__group group">
+                                <div class="form-item__main">
+                                    <div class="form-item__field">
+                                        <div class="form-item__avatar avatar">
+                                            <label class="label avatar__label">
+                                                <input type="file" name="groupChatImage" class="avatar__input" />
+                                                <img src="/image/no-image.png" alt="" class="avatar__img">
+                                                <span class="avatar__title">Изменить</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form__group group">
+                                <div class="group__header">
+                                    <div class="wysiwyg">
+                                        <h6>Название канала</h6>
+                                    </div>
+                                </div>
+                                <div class="group__main">
+                                    <div class="row">
+                                        <div class="col col_12">
+                                            <div class="form-item mb-0">
+                                                <div class="form-item__main">
+                                                    <div class="form-item__field">
+                                                        <input class="form-item__input" id="chat_name" name="chat_name" type="text" placeholder="Название канала">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form__group group">
+                                <div class="group__header">
+                                    <div class="wysiwyg">
+                                        <p>
+                                            <strong>Тип канала</strong>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="group__main">
+                                    <div class="form-item">
+                                        <div class="form-item__main">
+                                            <div class="form-item__field">
+                                                <div class="custom-check">
+                                                    <label class="label custom-check__label">
+                                                        <input type="radio" id="public" class="custom-check__input" name="chat_type" value="public">
+                                                        <svg class="custom-check__ico custom-check__ico_before">
+                                                            <use xlink:href="/image/svg/sprite.svg#radioBefore"></use>
+                                                        </svg>
+                                                        <svg class="custom-check__ico custom-check__ico_after">
+                                                            <use xlink:href="/image/svg/sprite.svg#radioAfter"></use>
+                                                        </svg>
+                                                        <span class="custom-check__text">Публичный</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-item">
+                                        <div class="form-item__main">
+                                            <div class="form-item__field">
+                                                <div class="custom-check">
+                                                    <label class="label custom-check__label">
+                                                        <input type="radio" id="private" class="custom-check__input" name="chat_type" value="private">
+                                                        <svg class="custom-check__ico custom-check__ico_before">
+                                                            <use xlink:href="/image/svg/sprite.svg#radioBefore"></use>
+                                                        </svg>
+                                                        <svg class="custom-check__ico custom-check__ico_after">
+                                                            <use xlink:href="/image/svg/sprite.svg#radioAfter"></use>
+                                                        </svg>
+                                                        <span class="custom-check__text">Приватный</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form__group group" id="slugGroup">
+                                <div class="group__header">
+                                    <div class="wysiwyg">
+                                        <p><strong>Уникальный адрес (для публичного)</strong></p>
+                                    </div>
+                                </div>
+                                <div class="group__main">
+                                    <input class="form-item__input" id="slug" name="slug" type="text" placeholder="Уникальный адрес">
+                                </div>
+                            </div>
+                            <div class="form__group group">
+                                <div class="group__header">
+                                    <div class="wysiwyg">
+                                        <p><strong>Описание (опционально)</strong></p>
+                                    </div>
+                                </div>
+                                <div class="group__main">
+                                    <textarea class="form-item__input" id="slug" name="slug" type="text" placeholder="Описание (опционально)"></textarea>
+                                </div>
+                            </div>
+                            <div class="form__group group">
+                                <div class="group__main">
+                                    <div class="form-item">
+                                        <div class="form-item__main">
+                                            <div class="form-item__field">
+                                                <button type="submit" class="btn w-100">
+                                                    <span class="btn__text">Пригласить участников</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    {{-- ---------------------- chat info ---------------------- --}}
+    <div class="modal__layout modal__layout_tiny modal__layout_chat-info" data-chat_id="0">
+        <!-- modal action -->
+        <div class="modal__action action">
+            <svg>
+                <use xlink:href="/image/svg/sprite.svg#close"></use>
+            </svg>
+        </div>
+        <!-- modal main -->
+        <div class="modal__main">
+            <div class="modal__group">
+                <div class="wysiwyg">
+                    <h3>О чате</h3>
+                </div>
+                <div class="series align_m-center">
+                    <div class="series__group series__group_second">
+                        <div class="media mb_m-0" id="avatarBlock">
+
+                        </div>
+                    </div>
+                    <div class="series__group">
+                        <div class="wysiwyg  mb-0" id="username">
+
+                        </div>
+                        <div class="tooltips tooltips_second mb-0">
+                            <div class="tooltips__list">
+                                <div class="tooltips__item">
+                                    <div class="tooltips__media">
+                                        <svg>
+                                            <use xlink:href="/image/svg/sprite.svg#tooltips_01"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="tooltips__title title">
+                                        <span class="title__text" id="views"></span>
+                                    </div>
+                                </div>
+                                <div class="tooltips__item">
+                                    <div class="tooltips__media">
+                                        <svg>
+                                            <use xlink:href="/image/svg/sprite.svg#tooltips_05"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="tooltips__title title">
+                                        <span class="title__text" id="score"></span>
+                                    </div>
+                                </div>
+                                <div class="tooltips__item">
+                                    <div class="tooltips__media">
+                                        <svg>
+                                            <use xlink:href="/image/svg/sprite.svg#tooltips_06"></use>
+                                        </svg>
+                                    </div>
+                                    <div class="tooltips__title title">
+                                        <span class="title__text" id="favorite"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal__group">
+                <div class="wysiwyg" id="description"></div>
+            </div>
+            <div class="modal__group">
+                <div class="socials">
+                    <div class="socials__list w-100" id="socials"></div>
+                </div>
+            </div>
+            <div class="modal__group" id="checkboxes"></div>
+            <div class="modal__group" id="buttons"></div>
+        </div>
+    </div>
+    {{-- ---------------------- move user to folder ---------------------- --}}
+    <div class="modal__layout modal__layout_tiny modal__layout_move-chat-to-folder" data-id="0">
+        <!-- modal action -->
+        <div class="modal__action action">
+            <svg>
+                <use xlink:href="/image/svg/sprite.svg#close"></use>
+            </svg>
+        </div>
+        <!-- modal main -->
+        <div class="modal__main">
+            <div class="wysiwyg">
+                <h3 id="folder_name">Перемещение группового чата</h3>
+            </div>
+            <div class="formular">
+                <div class="formular__main">
+                    <form action="post" class="form" onsubmit="moveChatToFolder(event)">
+                        <fieldset>
+                            <div class="form__group group form__group_second">
+                                <div class="group__header">
+                                    <div class="wysiwyg">
+                                        <h6>Выберите, в какую папку перенести чат</h6>
+                                    </div>
+                                </div>
+                                <div class="group__main">
+                                    <div class="row">
+                                        <div class="col col_12">
+                                            <div class="form-item mb-0">
+                                                <div class="form-item__main">
+                                                    <div class="form-item__field">
+                                                        <select id="user_folders" class="userChatFolders">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <div class="form-item">
+                <div class="form-item__main">
+                    <div class="form-item__field">
+                        <button type="submit" class="btn w-100" onclick="moveChatToFolder(event)">
+                            <span class="btn__text">Перенести</span>
+                        </button>
+                    </div>
+                </div>
+            </div><!-- //form-item -->
+        </div>
+    </div>
+
+
+
+
 </div>

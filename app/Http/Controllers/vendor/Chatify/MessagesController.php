@@ -53,6 +53,8 @@ class MessagesController extends Controller
 
         $contacts = $this->getUserList();
 
+        $userGroupChat = [];
+
         $countMessages = 0;
 
         $userFolders = \App\Models\ChFolders::where('user_id', $user->id)->orderBy('sort', 'asc')->get();
@@ -122,7 +124,8 @@ class MessagesController extends Controller
                     'sort' => $folder->sort,
                     'delete' => $folder->delete == 1,
                     'countMessages' => $countMessages,
-                    'users' => $folder->folder_name == 'Все' ? $sortedArray : []
+                    'users' => $folder->folder_name == 'Все' ? $sortedArray : [],
+                    'group' => $userGroupChat
                 ];
 
             }
@@ -130,8 +133,9 @@ class MessagesController extends Controller
 
         }else{
 
-            $userFolders->transform(function ($folder) use($contacts) {
+            $userFolders->transform(function ($folder) use($contacts, $userGroupChat) {
                 $usersData = [];
+
                 if ($folder->users != null && gettype($folder->users) == 'string') {
 
                     $userIds = explode(", ", $folder["users"]);
@@ -143,6 +147,33 @@ class MessagesController extends Controller
 
                 }else if($folder->users == null && $folder->delete == 0 && $folder->folder_name != 'Личное'){
                     $usersData = $contacts;
+                }
+
+                if($folder->group_id != null && gettype($folder->group_id) == 'string'){
+
+                    $groupsIds = explode(", ", $folder->group_id);
+                    $groupsIds = array_map("intval", $groupsIds);
+                    if($groupsIds){
+                        $userGroupChat = \App\Models\ChGroup::whereIn('id', $groupsIds)->get();
+                        if($userGroupChat){
+                            $userGroupChat->transform(function ($group) {
+
+                                $groupUsersCount = \App\Models\ChGroupUsers::where('ch_group_id', $group->id)->get()->count();
+
+                                return [
+                                    'id' => $group->id,
+                                    'name' => $group->name,
+                                    'description' => $group->description,
+                                    'image' => $group->image,
+                                    'countUsers' => $groupUsersCount
+                                ];
+
+                            });
+
+
+                        }
+                    }
+
                 }
 
                 $userCountMessages = 0;
@@ -174,6 +205,7 @@ class MessagesController extends Controller
                     'countMessages' => $userCountMessages,
                     'delete' => $folder['delete'] == 1,
                     'users' => $sortedArray,
+                    'groups' => $userGroupChat
 
                 ];
 
@@ -188,7 +220,9 @@ class MessagesController extends Controller
         }
 
 
+        $userGroupsChat = $this->getUserGroupChat();
 
+        $userInvites = $this->getInvites();
 
         $messenger_color = Auth::user()->messenger_color;
         return view('Chatify::pages.app', [
@@ -198,7 +232,9 @@ class MessagesController extends Controller
             'user' => $user,
             'contacts' => $contacts,
             'folders' => $userFolders,
-            'countMessages' => $countContacts
+            'countMessages' => $countContacts,
+            'userGroups' => $userGroupsChat,
+            'invites' => $userInvites
         ]);
     }
 
@@ -1158,8 +1194,6 @@ class MessagesController extends Controller
             if (file_exists($publicPath)) {
                 $extension = pathinfo($filename, PATHINFO_EXTENSION);
 
-//                dd($extension);
-
                 $playableExtensions = ["mp4", "mov", "avi", "mpegps", "wmv"];
                 $audio = ["wav", "mp3"];
                 $images = ["png", "jpg", "jpeg", "gif"];
@@ -1227,6 +1261,178 @@ class MessagesController extends Controller
         } else {
             return ['date' => explode(' ', $dateString)[0], 'time' => $messageDate->format('H:i')];
         }
+    }
+
+    private function getUserGroupChat(){
+
+        $groupChat = [];
+
+        $user = Auth::user();
+
+        if($user){
+
+            $usersGroups = $user->groupChat()->get();
+
+            if($usersGroups){
+
+                $usersGroups->transform(function($userGroup) use($user){
+
+                    $group = \App\Models\ChGroup::where('id', $userGroup->ch_group_id)->first();
+
+                    if($group){
+
+                        $chatUsers = $group->chatUsers()->get();
+                        if($chatUsers){
+                            $chatUsers->transform(function ($chatUser) {
+                                $user = \App\Models\User::where('id', $chatUser->user_id)->first();
+
+                                if($user){
+                                    return [
+                                        'id' => $user->id,
+                                        'first_name' => $user->first_name,
+                                        'last_name' => $user->last_name,
+                                        'image' => $user->image,
+                                        'is_admin' => $chatUser->is_admin == 1,
+                                        'last_online_at' => $user->last_online_at->format('Y-m-d H:i:s')
+                                    ];
+
+                                }else{
+
+                                    return [];
+                                }
+
+
+
+                            });
+
+                        }
+
+                        $lastMessage = $group->messages()->orderBy('created_at', 'DESC')->first();
+
+                        if($lastMessage){
+                            $image = $this->getImageFromAttachment($lastMessage->attachments);
+                            $audio = $lastMessage->audio_file;
+
+
+
+                            $from_id = \App\Models\User::where('id', $lastMessage->user_id)->first();
+                            if($from_id){
+
+                                $from_id = [
+                                    'id' => $from_id->id,
+                                    'first_name' => $from_id->first_name,
+                                    'last_name' => $from_id->last_name,
+                                    'image' => $from_id->image ? '/storage/' . $from_id->image : '/image/avatar.png',
+                                    'last_online_at' => $from_id->last_online_at ? $from_id->last_online_at->format('Y-m-d H:i:s') : null
+                                ];
+                            }
+
+                            $lastMessage = [
+                                'id' => $lastMessage->id,
+                                'from_id' => $from_id,
+                                'body' => $lastMessage->body,
+                                'image' => $image,
+                                'audio' => $audio,
+                                'attachment' => $lastMessage->attachments,
+                                'created_at' => $lastMessage->created_at->format('Y-m-d H:i:s')
+                            ];
+                        }
+
+
+
+                        return [
+                            'id' => $group->id,
+                            'name' => $group->name,
+                            'image' => ($group->image ? '/storage/'. $group->image : ($group->chat == 1 ? '/image/groupchat.png' : '/image/channel.png')),
+                            'is_admin' => $group->owner == $user->id,
+                            'chat' => $group->chat == 1,
+                            'users' => $chatUsers->toArray(),
+                            'countUsers' => $chatUsers->count(),
+                            'lastMessage' => $lastMessage,
+                            'countMessages' => 0
+                        ];
+
+                    }else{
+                        return [
+
+                        ];
+
+                    }
+
+
+
+
+                });
+
+                return $usersGroups->toArray();
+            }
+
+
+
+        }else{
+            return false;
+        }
+
+
+
+    }
+
+    public function getInvites(){
+
+        $user = Auth::user();
+
+        $getRecords = '';
+
+        if($user){
+            $inviteData = [];
+            $invites = $user->chatGroupInvites()->where('seen', 0)->get();
+
+            if($invites->count() > 0){
+
+                foreach($invites as $invite){
+                    $chat = \App\Models\ChGroup::where('id', $invite->ch_group_id)->first();
+                    $invited = \App\Models\User::where('id', $invite->sender_id)->first();
+
+
+                    $inviteData['invites'][] = [
+                        'channel_name' => $chat->name,
+                        'invited' => [
+                            'id' => $invited->id,
+                            'first_name' => $invited->first_name,
+                            'last_name' => $invited->last_name,
+                            'image' => $invited->image ? '/storage/' . $invited->image : '/image/avatar.png',
+                            'last_online_at' => $invited->last_online_at ? $invited->last_online_at->format('Y-m-d H:i:s'):null
+                        ]
+                    ];
+
+                }
+
+                $inviteData['countInvites'] = $invites->count();
+                $latestInvite = $user->chatGroupInvites()->latest('created_at')->first();
+                if($latestInvite){
+                    $inviteData['lastInvite'] = $latestInvite->created_at->format('H:i');
+                }
+
+
+
+                $getRecords .= view('Chatify::layouts.listItem', [
+                    'get' => 'invite',
+                    'invites' => $inviteData['invites'],
+                    'lastInvite' => $inviteData['lastInvite'],
+                    'countInvites' => $inviteData['countInvites']
+                ]);
+
+
+
+
+            }
+
+        }
+
+        return $getRecords;
+
+
+
     }
 
 }

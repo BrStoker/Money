@@ -44,9 +44,10 @@
     Vue.component('userarticleedit', require('@/js/components/pages/User/UserArticleEdit').default);
     Vue.component('notification', require('@/js/components/pages/Notification/Notification').default);
     Vue.component('traffic', require('@/js/components/pages/Traffic/Traffic').default);
-    // Vue.component('userstatistic', require('@/js/pages/User/Statistic').default);
-    // Vue.component('userdetailstatistic', require('@/js/pages/User/DetailStatistic').default);
-    // Vue.component('userdetailreview', require('@/js/pages/User/DetailReview').default);
+    Vue.component('instruments', require('@/js/components/pages/Instruments').default);
+    Vue.component('course', require('@/js/components/pages/Course').default);
+    Vue.component('coursefull', require('@/js/components/pages/CourseFull').default);
+    Vue.component('usercourse', require('@/js/components/pages/User/UserCourse').default);
     // Vue.component('search', require('@/js/pages/Search').default);
 
     import Store from '@/js/store/Store'

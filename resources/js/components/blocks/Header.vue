@@ -4,6 +4,8 @@
       LinkElement(href="/" classCss="logo__link" :title="store.text.logo")
         ImageElement(:src="store.images.logo" :alt="store.text.logo")
     LoginButton
+    Notification
+
 
 </template>
 
@@ -13,6 +15,7 @@
   import ImageElement from '@/js/components/elements/Image'
   import LinkElement from '@/js/components/elements/Link'
   import LoginButton from '@/js/components/blocks/LoginButton'
+  import Notification from '@/js/components/elements/Notification'
 
 
   export default {
@@ -29,7 +32,7 @@
 
     },
     components: {
-      DivElement, ImageElement, LinkElement, LoginButton
+      DivElement, ImageElement, LinkElement, LoginButton, Notification
     },
   }
 

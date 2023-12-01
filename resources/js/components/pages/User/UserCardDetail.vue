@@ -24,7 +24,8 @@ MainElement(classCss="layout__main")
                       SpanElement(classCss="btn__text") {{button.name}}
         DivElement(classCss="col, col_4, col_mob-12")
           UserSocialBlock(:data="UserSocials")
-  UserArticles
+  UserTabs
+  //UserArticles
 </template>
 
 <script>
@@ -39,7 +40,9 @@ import LinkElement from '@/js/components/elements/Link'
 import SpanElement from '@/js/components/elements/Span'
 
 import UserSocialBlock from '@/js/components/blocks/profile/user/UserSocial'
+import UserTabs from '@/js/components/blocks/UserTabs'
 import UserArticles from '@/js/components/blocks/profile/user/UserArticle'
+
 
 import HttpClass from '@/js/classes/Http'
 import AppMethods from '@/js/methods/App'
@@ -87,7 +90,7 @@ export default {
   },
   components: {
     MainElement, DivElement, Section, RowElement, ImageElement, Tooltips, LinkElement, SpanElement,
-    UserSocialBlock, UserArticles
+    UserSocialBlock, UserTabs, UserArticles
   },
   methods: {
     ...MethodsUser,
@@ -143,7 +146,6 @@ export default {
     },
     successWrite(result){
       if(result.data.success){
-        // console.log(result.data)
         window.location.href = result.data.redirectTo
       }
     },

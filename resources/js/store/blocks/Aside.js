@@ -75,6 +75,15 @@ export default{
                 needAuth: true,
                 countMessage: false
             },
+            {
+                name: 'Инструменты',
+                ico_main: '/image/svg/sprite.svg#menu__ico-main-09',
+                ico_second: '/image/svg/sprite.svg#menu__ico-second-09',
+                link: '/instruments',
+                active: false,
+                needAuth: true,
+                countMessage: false
+            }
         ]
     },
 

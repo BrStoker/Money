@@ -78,6 +78,8 @@ class Article extends Model {
             
         });
 
+
+
     }
 
 

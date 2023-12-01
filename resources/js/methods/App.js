@@ -80,10 +80,6 @@ export default {
 
             let input = store.interests.steps[0].inputs
 
-            // if(input.length > 0){
-            //     input.length = 0
-            // }
-
             for(let interes in appData.interests){
                 let checkValue = false
                 let item = appData.interests[interes]
@@ -160,6 +156,12 @@ export default {
 
         }
 
+        if(_.has(appData, 'courses') == true && appData.courses !=null){
+
+            store.courses = appData.courses
+
+        }
+
         if(_.has(appData, 'user_detail') == true && appData.user_detail != null){
             for(let key in appData.user_detail){
                 store.user_detail[key] = appData.user_detail[key]
@@ -172,6 +174,18 @@ export default {
         if(_.has(appData, 'countries') == true && appData.countries != null){
             for(let key in appData.countries){
                 store.countries[key] = appData.countries[key]
+            }
+        }
+
+        if(_.has(appData, 'courseTypes') == true && appData.courseTypes !=null){
+            for(let key in appData.courseTypes){
+                store.courseTypes[key] = appData.courseTypes[key]
+            }
+
+        }
+        if(_.has(appData, 'courseSubject') == true && appData.courseSubject != null){
+            for(let key in appData.courseSubject){
+                store.courseSubject[key] = appData.courseSubject[key]
             }
         }
 

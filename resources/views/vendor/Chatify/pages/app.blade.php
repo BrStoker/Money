@@ -1,6 +1,6 @@
 @include('Chatify::layouts.headLinks')
 
-<div class="layout layout_ready-load">
+<div class="layout layout_ready-load" id="app">
     @include('Chatify::layouts.header')
     <div class="layout__middle">
         @include('Chatify::layouts.aside')

@@ -1,6 +1,14 @@
 <template lang="pug">
-  DivElement(classCss="wysiwyg")
-    SpanElement() {{info}}
+  DivElement(classCss="section__subsection, section__subsection_second, subsection")
+    //DivElement(classCss="subsection__header")
+    //  SearchForm
+    DivElement(classCss="subsection__main")
+      RowElement
+        DivElement(classCss="col, col_8, col_mob-12")
+          DivElement(classCss="box")
+            DivElement(classCss="box__list")
+              RowElement
+                CourseBlock(v-for="(item, index) in courses" :key="index" :data="item")
 </template>
 
 <script>
@@ -19,6 +27,7 @@
   import FooterBlock from '@/js/components/blocks/Footer'
   import ContentBlock from '@/js/components/blocks/Content'
   import BreadcrumbsBlock from '@/js/components/blocks/Breadcrumbs'
+  import CourseBlock from '@/js/components/blocks/CourseBlock'
   
   import ModalLayout from '@/js/components/blocks/ModalLayout'
   import AppMethods from '@/js/methods/App'
@@ -32,13 +41,15 @@
     data() {
       return {
         user: this.$store.state.data.app.user,
-        info: 'Страница находится в стадии разработки'
+        info: 'Страница находится в стадии разработки',
+        courses: this.filterCourses()
+
       }
     },
     components: {
       DivElement, LinkElement, SectionElement, MainElement, RowElement, ButtonElement, SpanElement,
       HeaderBlock, WrapperBlock, AsideBlock, BreadcrumbsBlock, ContentBlock, FooterBlock,
-      ModalLayout
+      ModalLayout, CourseBlock
 
     },
     methods: {
@@ -46,9 +57,21 @@
       ...ComputedIndex,
       ...FeedEvents,
       ...ComputedFeed,
+      filterCourses(){
+        var userCourses = []
+        var allCourses = this.$store.state.data.app.courses
+        _.forEach(allCourses, (course)=>{
+          // console.log(this.$store.state.data.app.user.data.id, course)
+          if(course.user_id == this.$store.state.data.app.user.data.id){
+            userCourses.push(course)
+          }
+        })
+        return userCourses
+      }
       
     },
     created(){
+
 
     },
     mounted() {

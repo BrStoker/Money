@@ -13,6 +13,7 @@ export default {
             title: '',
             name: 'main',
             type: 'checkbox',
+            simpleSelect: false,
             inputs:[
 
                 {
@@ -55,6 +56,7 @@ export default {
             type: 'radio',
             value: '',
             send: true,
+            simpleSelect: false,
             inputs:[
                 {
                     type: 'radio',
@@ -95,6 +97,7 @@ export default {
             title: 'Местоположение',
             type: 'select_geoposition',
             name: 'geoposition',
+            simpleSelect: false,
 
             inputs:[
                 {
@@ -167,6 +170,7 @@ export default {
             name: 'age',
             title: 'Возраст',
             type: 'option',
+            simpleSelect: true,
             inputs:[
                 {
                     type: 'option',

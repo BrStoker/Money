@@ -16,6 +16,8 @@ use Chatify\Facades\ChatifyMessenger as Chatify;
 use Illuminate\Support\Facades\View;
 use Carbon\Carbon;
 use Chatify\ChatifyMessenger;
+use function PHPUnit\Framework\isNull;
+use Illuminate\Support\Str;
 
 
 class ChatController extends Controller
@@ -261,6 +263,86 @@ class ChatController extends Controller
             }else{
                 $reaction = null;
             }
+
+            $dataMessage = [];
+
+            $dataMessage['message'] = html_entity_decode("<audio controls><source src='/storage/audio/$message->audio_file' type='audio/webm'>Ваш браузер не поддерживает аудиофайлы WebM.</audio>");
+            $dateTime = $this->formatMessageDate($message->created_at);
+            $dataMessage['dateTitle'] = $dateTime['date'];
+            $dataMessage['timeTitle'] = $dateTime['time'];
+            $dataMessage['direction'] = true;
+            $dataMessage['direction'] = 'sent';
+            $dataMessage['id'] = $message->id;
+            $dataMessage['reply'] = $msg;
+            $dataMessage['delete'] = false;
+            $dataMessage['date'] = $message->created_at->format('H:i');
+            $dataMessage['reaction'] = $reaction;
+            $dataMessage['isFile'] = false;
+            $dataMessage['forwarded'] = false;
+
+            $messages[] = $dataMessage;
+
+            $view = View::make('Chatify::layouts.listItem', ['get' => 'messageList','key'=>$message->created_at->format('Y-m-d'), 'messages'=> $messages])->render();
+
+            if(!empty($view)){
+                return response()->json(['success' => true, 'tempID' => $request->tempID, 'message' => $view]);
+            }else{
+                return response()->json(['success' => false, 'error' => 'Ошибка при рендере шаблона']);
+            }
+
+        }else{
+            return response()->json(['success' => false, 'error' => 'Ошибка сохранения голосового сообщения']);
+        }
+
+    }
+
+    public function saveAudioChat(Request $request)
+    {
+
+        $audioPath = $request->file('audio')->store('/public/audio/');
+
+        $message = \App\Models\ChGroupMessages::create([
+            'ch_group_id' => $request->chat_id,
+            'user_id' => Auth::user()->id,
+            'audio_file' => basename($audioPath),
+        ]);
+
+        if($message){
+            $msg = null;
+            if($message->reply_id){
+                $msg = \App\Models\ChGroupMessages::find($message->reply_id);
+                $replyMessageBody = $msg->body;
+                if ($msg->attachments !== null) {
+                    $replyAttachmentData = json_decode($msg->attachments);
+                    $replyMessageBody = $this->getFileType($replyAttachmentData->new_name);  //html_entity_decode("<img src='/storage/attachments/{$replyAttachmentData->new_name}'>");
+                } elseif ($msg->audio_file !== null) {
+                    $replyMessageBody = html_entity_decode("<audio controls><source src='/storage/audio/{$msg->audio_file}' type='audio/webm'>Ваш браузер не поддерживает аудиофайлы WebM.</audio>");
+                } elseif ($msg->from_id == Auth::user()->id) {
+                    $replyMessageBody = $msg->hide_from == 1 ? 'Удаленное сообщение' : $msg->body;
+                } else {
+                    $replyMessageBody = $msg->hide_to == 1 ? 'Удаленное сообщение' : $msg->body;
+                }
+                $reply_from_id = \App\Models\User::find($msg->from_id);
+                if($reply_from_id){
+                    $reply_from_id = [
+                        'id' => $reply_from_id->id,
+                        'first_name' => $reply_from_id->first_name,
+                        'last_name' => $reply_from_id->last_name
+                    ];
+                }
+                $msg = [
+                    'id' => $msg->id,
+                    'from_id' => $reply_from_id,
+                    'reply_message' => $replyMessageBody
+                ];
+            }
+//            $reactions = \App\Models\ChUserReaction::where('ch_message_id', $message->id)->get();//$message->reactions()->first();
+//            if($reactions){
+//                $reaction = $reactions->reaction;
+//            }else{
+//                $reaction = null;
+//            }
+            $reaction = null;
 
             $dataMessage = [];
 
@@ -627,7 +709,6 @@ class ChatController extends Controller
         }
 
         if($settingRecord){
-//            dd($settingRecord);
 
             $userInfo['settings'][] = ['name' => 'important', 'title' => 'Важно', 'value' => $settingRecord->important == 1 ?? true];
             $userInfo['settings'][] = ['name' => 'notifications', 'title' => 'Присылать уведмления', 'value' => $settingRecord->notifications == 1 ?? true];
@@ -2086,6 +2167,7 @@ class ChatController extends Controller
 
         $folder = $user->chatFolders()->where('id', $request->tabId)->first();
         $getRecords = '';
+        $userInvites = '';
         if($folder){
             if($folder->folder_name == 'Все'){
 
@@ -2122,6 +2204,12 @@ class ChatController extends Controller
                         'user' => $contact
                     ]);
                 }
+
+                //групповые чаты
+                $userInvites = $this->getInvites();
+                $groupChats = $this->getUserGroupChat();
+
+
 
 
             }else{
@@ -2166,6 +2254,20 @@ class ChatController extends Controller
                     ]);
                 }
 
+                if(!empty($folder->group_id)){
+                    $userGroupChats = explode(',', $folder->group_id);
+                    $userGroupChats = array_map("intval", $userGroupChats);
+                    $groupChats = $this->getUserGroupChat();
+
+                    $groupChats = array_filter($groupChats, function ($chat) use ($userGroupChats) {
+                        return in_array($chat["id"], $userGroupChats);
+                    });
+
+
+
+                }
+
+
             }
 
             $folders = $this->getFolders($user->id, $request->tabId);
@@ -2176,6 +2278,16 @@ class ChatController extends Controller
                 if($contact['countMessages'] > 0){
                     $unreadMessages++;
                 }
+            }
+
+            $chatRecord = '';
+
+            foreach ($groupChats as $chat){
+                $chatRecord .= view('Chatify::layouts.listItem', [
+                    'get' => 'listGroups',
+                    'group' => $chat,
+                    'id' => 0
+                ]);
             }
 
             $userMenu = view('Chatify::layouts.listItem', [
@@ -2600,6 +2712,1011 @@ class ChatController extends Controller
             return ['date' => explode(' ', $dateString)[0], 'time' => $messageDate->format('H:i')];
         }
     }
+
+    public function addGroupChat(\Illuminate\Http\Request $request){
+
+        $filePath = '';
+        $description = '';
+        $image = $request->file('image');
+
+        if(isset($image) == true && empty($image) == false){
+            $filePath = $image->path();
+        }
+
+        if(isset($request['description']) == true && !is_null($request['description'])){
+            $description = $request['description'];
+        }
+
+
+        $record = \App\Models\ChGroup::create([
+
+            'name' => $request['chat_name'],
+            'image' => $filePath != '' ? $filePath : null,
+            'owner' => Auth::user()->id,
+            'description' => $description,
+            'chat' => true,
+            'type' => $request['chat_type'],
+            'slug' => $request['chat_type'] == 'public' && $request['slug'] ? $request['slug'] : Str::slug($request['chat_name'])
+
+        ]);
+
+        if($record){
+
+            $contacts = $this->getUsersForChat();
+
+            $getRecords = '';
+
+            foreach($contacts as $user){
+
+                $getRecords .= view('Chatify::layouts.listItem', [
+                    'get' => 'userForModal',
+                    'checked' => false,
+                    'user' => $user
+
+                ]);
+
+            }
+            if($contacts){
+                return response()->json([
+                    'status' => true,
+                    'chat_id' => $record->id,
+                    'contacts' => $getRecords
+                ]);
+
+            }else{
+                return response()->json([
+                    'status' => false,
+                    'error' => 'В вашем списке нет контактов'
+                ]);
+            }
+
+        }else{
+            return response()->json([
+                'status' => false,
+                'error' => 'Ошибка создания чата'
+            ]);
+        }
+
+    }
+
+    public function createInviteGroupchat(\Illuminate\Http\Request $request){
+
+        $request_data = $request->all();
+
+        if(isset($request_data['users']) == true){
+
+            $chatModel = \App\Models\ChGroup::where('id', $request_data['chat_id'])->first();
+
+            if($chatModel){
+                foreach ($request_data['users'] as $userId => $value){
+                    $haveRecord = \App\Models\ChGroupInvite::where('ch_group_id', $chatModel->id)->where('user_id', $value)->first();
+                    if(!$haveRecord){
+                        $chatModel->invites()->create([
+                            'ch_group_id' => $chatModel->id,
+                            'user_id' => $value,
+                            'seen' => 0
+                        ]);
+                    }
+                }
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Приглашения отправлены'
+                ]);
+            }
+        }
+
+
+
+
+    }
+
+    public function getChatInfo(\Illuminate\Http\Request $request){
+
+        $chat = \App\Models\ChGroup::where('id', $request->chat_id)->first();
+
+        $chatInfo = [];
+
+        if($chat){
+
+            $chatMessages = $chat->messages()->get();
+            $groupedMessages = '';
+            if($chatMessages){
+
+                $groupedMessages = $chatMessages->groupBy(function ($message) {
+                    return $message->created_at->format('Y-m-d');
+                });
+                $groupedMessages->transform(function ($messages, $date) {
+
+                    return $messages->map(function ($message) {
+                        $messageBody = $message->body;
+
+                        $isFile = false;
+
+                        if (!$messageBody) {
+                            if ($message->attachments) {
+                                $attachmentData = json_decode($message->attachments);
+                                $messageBody = $this->getFileType($attachmentData->new_name);
+                                $isFile = true;
+                            } elseif ($message->audio_file){
+                                $messageBody = html_entity_decode("<audio controls><source src='/storage/audio/{$message->audio_file}' type='audio/webm'>Ваш браузер не поддерживает аудиофайлы WebM.</audio>");
+                                $isFile = true;
+                            }
+                        }
+                        $forwardUser = null;
+                        //TODO уточнить момент по реакциям в групповых чатах и каналах. Пока прикручена тот же функционал, что и в личной переписке
+                        $reactions = \App\Models\ChUserReaction::where('ch_message_id', $message->id)->where('user_id', Auth::user()->id)->get();
+
+                        $emojies = array();
+                        if($reactions){
+                            foreach($reactions as $reaction){
+                                array_push($emojies, $reaction->reaction);
+                            }
+                        }else{
+                            $emojies = null;
+                        }
+
+                        $messageDelete = false;
+                        $reply = [];
+                        $senderInfo = \App\Models\User::where('id', $message->user_id)->first();
+                        $messageUserData = [];
+                        if($senderInfo){
+                            $messageUserData = [
+                                'id' => $senderInfo->id,
+                                'first_name' => $senderInfo->first_name,
+                                'last_name' => $senderInfo->last_name,
+                                'image' => $senderInfo->image ? '/storage/' . $senderInfo->image : '/image/avatar.png'
+                            ];
+
+                        }
+                        return [
+                            'id' => $message->id,
+                            'direction' => $message->user_id == Auth::user()->id ? 'sent' : 'reseived',
+                            'from_id' => $message->user_id,
+                            'messageUserData' => $messageUserData,
+                            'delete' => $messageDelete,
+                            'isFile' => $isFile,
+                            'message' => $messageBody,
+                            'date' => $message->created_at->format('H:i'),
+                            'reply' => $reply,
+                            'reaction' => $emojies,
+                            'forwarded' => !($message->forwarded == 0),
+                            'forward_from' => $forwardUser
+                        ];
+
+
+                    });
+                });
+                $getRecords = '';
+                if($groupedMessages){
+                    foreach($groupedMessages as $key => $message){
+                        $date = $this->formatDateToObject($key);
+                        $getRecords .= view('Chatify::layouts.listItem', [
+                            'get' => 'messageListChat',
+                            'key' => $date['date'],
+                            'messages' => $message
+                        ]);
+                    }
+                }
+            }
+
+
+            $chatUsers = $chat->chatUsers()->get()->count();
+
+            $chatInfo = [
+                'id' => $chat->id,
+                'name' => $chat->name,
+                'chat' => $chat->chat == 1,
+                'image' => ($chat->image ? '/storage/'. $chat->image : ($chat->chat == 1 ? '/image/groupchat.png' : '/image/channel.png')),
+                'messages' => $getRecords,
+                'countUsers' => $chatUsers
+            ];
+
+            return response()->json([
+                'status' => true,
+                'chatInfo' => $chatInfo
+            ]);
+
+
+        }else{
+            return response()->json([
+                'status' => false,
+                'error' => 'Чат не найден'
+            ]);
+        }
+
+
+
+
+    }
+
+    public function getInviteList(\Illuminate\Http\Request $request){
+
+        $curentUser = Auth::user();
+
+
+        $getRecords = '';
+
+        if($curentUser){
+
+            $inviteList = \App\Models\ChGroupInvite::where('user_id', $curentUser->id)->where('seen', 0)->get();
+
+            if($inviteList){
+
+                $inviteList->transform(function ($invite) {
+
+                    $chat = \App\Models\ChGroup::where('id', $invite->ch_group_id)->first();
+
+                    $invited = \App\Models\User::where('id', $invite->sender_id)->first();
+
+                    if($invited){
+
+                        $invited = [
+                            'id' => $invited->id,
+                            'first_name' => $invited->first_name,
+                            'last_name' => $invited->last_name,
+                            'image' => $invited->image ? '/storage/' . $invited->image : '/image/avatar.png',
+                            'last_online_at' => $invited->last_online_at ? $invited->last_online_at->format('Y-m-d H:i:s') : null
+                        ];
+
+                    }
+
+
+                    return [
+                        'id' => $chat->id,
+                        'invite_name' => $chat->name,
+                        'image' => ($chat->image ? '/storage/'. $chat->image : ($chat->chat == 1 ? '/image/groupchat.png' : '/image/channel.png')),
+                        'invited' => $invited
+                    ];
+
+
+                });
+
+                $getRecords .= view('Chatify::layouts.listItem', [
+                    'get' => 'listInvites',
+                    'invites' => $inviteList
+                ]);
+
+                $headerInvite = view('Chatify::layouts.listItem', [
+                    'get' => 'headerInvite'
+                ])->render();
+
+            }
+
+        }
+
+        if($getRecords != ''){
+            return response()->json([
+                'status' => true,
+                'inviteList' => $getRecords,
+                'header' => $headerInvite
+            ]);
+
+        }else{
+            return response()->json([
+                'status' => true,
+                'inviteList' => 'Список приглашений пуст'
+            ]);
+        }
+    }
+
+    public function removeInvite(\Illuminate\Http\Request $request){
+
+        $currentUser = Auth::user();
+
+        if($currentUser){
+
+            $request_data = $request->all();
+
+            $invite = \App\Models\ChGroupInvite::where('user_id', $currentUser->id)->where('ch_group_id', $request_data['chat_id'])->where('seen', 0)->first();
+
+            if($invite){
+
+                $invite->seen = 1;
+
+
+                if($invite->save()){
+
+                    return response()->json([
+                        'status' => true,
+                    ]);
+                }else{
+                    return response()->json([
+                        'status' => false
+                    ]);
+                }
+            }else{
+                return response()->json([
+                    'status' => false
+                ]);
+            }
+
+        }else{
+
+            return response()->json([
+                'status' => false,
+                'error' => 'Пользователь не авторизован'
+            ]);
+        }
+
+
+
+    }
+
+    public function aproveInvite(\Illuminate\Http\Request $request){
+
+        $request_data = $request->all();
+        $currentUser = Auth::user();
+
+        if($currentUser){
+
+            $invite = \App\Models\ChGroupInvite::where('user_id', $currentUser->id)->where('ch_group_id', $request_data['chat_id'])->where('seen', 0)->first();
+
+            if($invite){
+
+                $chat = \App\Models\ChGroup::where('id', $invite->ch_group_id)->first();
+                if ($chat){
+
+                    $record = $chat->chatUsers()->create([
+                        'ch_group_id' => $chat->id,
+                        'user_id' => $currentUser->id,
+                        'is_admin' => 0
+                    ]);
+
+                    if($record){
+
+                        $invite->seen = 1;
+
+                        if($invite->save()){
+                            return response()->json([
+                                'status' => true
+                            ]);
+                        }
+                    }
+
+                }else{
+                    return response()->json([
+                        'status' => false,
+                        'error' => 'Чат или группа не обнаружены'
+                    ]);
+                }
+
+
+            }else{
+                return response()->json([
+                    'status' => false,
+                    'error' => 'Приглашение не обнаружено'
+
+                ]);
+            }
+
+
+
+        }else{
+            return response()->json([
+                'status' => false,
+                'error' => 'Пользователь не авторизован'
+            ]);
+
+        }
+
+
+
+    }
+
+    public function refreshGroupChat(\Illuminate\Http\Request $request){
+
+        $currentUser = Auth::user();
+        $request_data = $request->all();
+
+        if($currentUser){
+            $getRecords = $this->getInvites();
+            $userGroups = $this->getUserGroupChat();
+
+
+            foreach($userGroups as $group){
+
+                $getRecords .= view('Chatify::layouts.listItem', [
+                    'get' => 'listGroups',
+                    'id' => $request_data['active_chat'],
+                    'group' => $group
+                ]);
+
+            }
+
+            return response()->json([
+                'status' => true,
+                'chats' => $getRecords
+            ]);
+
+
+        }else{
+
+            return response()->json([
+                'status' => false,
+                'error' => 'Пользователь не авторизован'
+            ]);
+
+        }
+
+
+    }
+
+    public function getInvites(){
+
+        $user = Auth::user();
+
+        $getRecords = '';
+
+        if($user){
+            $inviteData = [];
+            $invites = $user->chatGroupInvites()->where('seen', 0)->get();
+
+            if($invites->count() > 0){
+
+                foreach($invites as $invite){
+                    $chat = \App\Models\ChGroup::where('id', $invite->ch_group_id)->first();
+                    $invited = \App\Models\User::where('id', $invite->sender_id)->first();
+
+
+                    $inviteData['invites'][] = [
+                        'channel_name' => $chat->name,
+                        'invited' => [
+                            'id' => $invited->id,
+                            'first_name' => $invited->first_name,
+                            'last_name' => $invited->last_name,
+                            'image' => $invited->image ? '/storage/' . $invited->image : '/image/avatar.png',
+                            'last_online_at' => $invited->last_online_at ? $invited->last_online_at->format('Y-m-d H:i:s'):null
+                        ]
+                    ];
+
+                }
+
+                $inviteData['countInvites'] = $invites->count();
+                $latestInvite = $user->chatGroupInvites()->latest('created_at')->first();
+                if($latestInvite){
+                    $inviteData['lastInvite'] = $latestInvite->created_at->format('H:i');
+                }
+
+
+
+                $getRecords .= view('Chatify::layouts.listItem', [
+                    'get' => 'invite',
+                    'invites' => $inviteData['invites'],
+                    'lastInvite' => $inviteData['lastInvite'],
+                    'countInvites' => $inviteData['countInvites']
+                ]);
+
+
+
+
+            }
+
+        }
+
+        return $getRecords;
+
+
+
+    }
+
+    private function getUserGroupChat(){
+
+        $groupChat = [];
+
+        $user = Auth::user();
+
+        if($user){
+
+            $usersGroups = $user->groupChat()->get();
+
+            if($usersGroups){
+
+                $usersGroups->transform(function($userGroup) use($user){
+
+                    $group = \App\Models\ChGroup::where('id', $userGroup->ch_group_id)->first();
+
+                    if($group){
+
+                        $chatUsers = $group->chatUsers()->get();
+                        if($chatUsers){
+                            $chatUsers->transform(function ($chatUser) {
+                                $user = \App\Models\User::where('id', $chatUser->user_id)->first();
+
+                                if($user){
+                                    return [
+                                        'id' => $user->id,
+                                        'first_name' => $user->first_name,
+                                        'last_name' => $user->last_name,
+                                        'image' => $user->image,
+                                        'is_admin' => $chatUser->is_admin == 1,
+                                        'last_online_at' => $user->last_online_at->format('Y-m-d H:i:s')
+                                    ];
+
+                                }else{
+
+                                    return [];
+                                }
+
+
+
+                            });
+
+                        }
+
+                        $lastMessage = $group->messages()->orderBy('created_at', 'DESC')->first();
+
+                        if($lastMessage){
+                            $image = $this->getImageFromAttachment($lastMessage->attachment);
+                            $audio = $lastMessage->audio_file;
+
+
+
+                            $from_id = \App\Models\User::where('id', $lastMessage->user_id)->first();
+                            if($from_id){
+
+                                $from_id = [
+                                    'id' => $from_id->id,
+                                    'first_name' => $from_id->first_name,
+                                    'last_name' => $from_id->last_name,
+                                    'image' => $from_id->image ? '/storage/' . $from_id->image : '/image/avatar.png',
+                                    'last_online_at' => $from_id->last_online_at ? $from_id->last_online_at->format('Y-m-d H:i:s') : null
+                                ];
+                            }
+
+                            $lastMessage = [
+                                'id' => $lastMessage->id,
+                                'from_id' => $from_id,
+                                'body' => $lastMessage->body,
+                                'audio' => $audio,
+                                'image' => $image,
+                                'attachment' => $lastMessage->attachment,
+                                'created_at' => $lastMessage->created_at->format('Y-m-d H:i:s')
+                            ];
+                        }
+
+
+
+                        return [
+                            'id' => $group->id,
+                            'name' => $group->name,
+                            'image' => ($group->image ? '/storage/'. $group->image : ($group->chat == 1 ? '/image/groupchat.png' : '/image/channel.png')),
+                            'is_admin' => $group->owner == $user->id,
+                            'chat' => $group->chat == 1,
+                            'users' => $chatUsers->toArray(),
+                            'countUsers' => $chatUsers->count(),
+                            'lastMessage' => $lastMessage,
+                            'countMessages' => 0
+                        ];
+
+                    }else{
+                        return [
+
+                        ];
+
+                    }
+
+
+
+
+                });
+
+                return $usersGroups->toArray();
+            }
+
+
+
+        }else{
+            return false;
+        }
+
+
+
+    }
+
+    public function sendMessageGroupChat(\Illuminate\Http\Request $request){
+
+        $error = (object)[
+            'status' => 0,
+            'message' => null
+        ];
+        $attachment = null;
+        $attachment_title = null;
+        $reply_id = null;
+
+        if(isset($request->reply_id)){
+            $reply_id = $request->reply_id;
+        }
+
+        if($request->hasFile('file')){
+
+            $allowed_images = Chatify::getAllowedImages();
+            $allowed_files  = Chatify::getAllowedFiles();
+            $allowed        = array_merge($allowed_images, $allowed_files);
+
+            $file = $request->file('file');
+            if($file->getSize() < Chatify::getMaxUploadSize()){
+                if(in_array(strtolower($file->extension()), $allowed)){
+                    $attachment_title = $file->getClientOriginalName();
+
+                    $attachment = str_replace(' ', '-', $attachment_title);
+
+                    $file->storeAs(config('chatify.attachments.folder'), $attachment, config('chatify.storage_disk_name'));
+                }else{
+                    $error->status = 1;
+                    $error->message = 'Это расширение не поддерживается';
+                }
+            }else{
+                $error->status = 1;
+                $error->message = 'Загружаемый файл слишком большой';
+            }
+        }
+
+        $messageData = '';
+        if(!$error->status){
+
+            $message = \App\Models\ChGroupMessages::create([
+                'user_id' => Auth::user()->id,
+                'ch_group_id' => $request->id,
+                'body' => htmlentities(trim($request['message']), ENT_QUOTES, 'UTF-8'),
+                'attachments' => ($attachment) ? json_encode((object)[
+                    'new_name' => $attachment,
+                    'old_name' => htmlspecialchars(trim($attachment_title), ENT_QUOTES, 'UTF-8'),
+                ]): null,
+            ]);
+
+            $messageData = $message;
+
+            $view = '';
+
+            if(!empty($messageData)){
+                $dataMessage = [];
+                $isFile = false;
+                if(isset($messageData->attachments) && $messageData->attachments !== null){
+
+                    $attachmentData = json_decode($messageData->attachments);
+                    $dataMessage['message'] = $this->getFileType($attachmentData->new_name);
+                    $isFile = true;
+
+                }else{
+                    $dataMessage['message'] = $messageData->body;
+                }
+                $msg = null;
+                if($reply_id){
+                    $msg = \App\Models\ChGroupMessages::find($reply_id);
+
+                    if($msg){
+
+                        $replyMessageBody = $msg->body;
+                        if($msg->attachments !== null){
+                            $replyAttachmentData = json_decode($msg->attachments);
+                            $replyMessageBody = html_entity_decode("<img src='/storage/attachments/{$replyAttachmentData->new_name}'>");
+                        }
+
+                        $reply_from_id = \App\Models\User::find($msg->user_id);
+                        if($reply_from_id){
+                            $reply_from_id = [
+                                'id' => $reply_from_id->id,
+                                'first_name' => $reply_from_id->first_name,
+                                'last_name' => $reply_from_id->last_name,
+                            ];
+                        }
+
+                        $msg = [
+                            'id' => $msg->id,
+                            'from_id' => $reply_from_id,
+                            'reply_message' => $replyMessageBody
+                        ];
+
+                    }
+
+                }
+//                TODO прикрутить реакции (пока null)
+                $reaction = null;
+
+                $dateTime = $this->formatMessageDate($messageData->created_at);
+
+                $dataMessage['dateTitle'] = $dateTime['date'];
+                $dataMessage['timeTitle'] = $dateTime['time'];
+                $dataMessage['direction'] = 'sent';
+                $dataMessage['msgId'] = $message->id;
+                $dataMessage['delete'] = false;
+                $dataMessage['id'] = $message->id;
+                $dataMessage['isFile'] = $isFile;
+                $dataMessage['reply'] = $msg;
+                $dataMessage['date'] = $message->created_at->format('H:i');
+                $dataMessage['reaction'] = $reaction;
+                $dataMessage['forwarded'] = false;
+
+                $messages[] = $dataMessage;
+
+                $key = $this->formatDateToObject($messageData->created_at->format('Y-m-d H:i:s'));
+
+                $view = View::make('Chatify::layouts.listItem',['get' => 'messageList', 'key'=>$key['date'], 'messages'=> $messages] )->render();
+
+            }
+
+            return response()->json([
+                'status' => '200',
+                'error' => $error,
+                'message' => $view,
+                'tempID' => $request['temporaryMsgId'],
+            ]);
+
+
+        }
+    }
+
+    public function deleteMessageChat(\Illuminate\Http\Request $request){
+
+        $message = \App\Models\ChGroupMessages::find($request->message_id);
+
+        if(isset($message) && !empty($message)){
+
+            if($message->user_id == Auth::user()->id){
+
+                if($message->delete()){
+
+                    $messageData = [
+                        'id' => $message->id,
+                        'direction' => 'sent',
+                        'dateTitle' => $message->created_at->format('Y-m-d'),
+                        'message' => '<p>Удаленное сообщение</p>',
+                        'date' => $message->created_at->format('H:i'),
+                        'msgId' => $request->message_id,
+                        'reply' => $message->reply_id,
+                        'reaction' => null,
+                        'delete' => true,
+                        'forwarded' => $message->forwarded
+                    ];
+                    $messages[] = $messageData;
+
+                    $view = View::make('Chatify::layouts.listItem', ['get' => 'messageList', 'messages'=> $messages])->render();
+
+                    return response()->json([
+                        'status' => true,
+                        'message' => $view,
+                        'message_id' => $request->message_id
+                    ]);
+
+
+                }else{
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Ошибка удаления сообщения'
+                    ]);
+
+                }
+
+
+            }else{
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Сообщение не найдено'
+                ]);
+            }
+
+
+
+        }
+
+
+
+//        if($message){
+//            $direction = null;
+//            if($message->user_id == Auth::user()->id){
+//                $message->hide_from = 1;
+//                $direction = 'sent';
+//            }else{
+//                $message->hide_to = 1;
+//                $direction = 'reseived';
+//            }
+//            $record = $message->save();
+//
+//            if($record){
+//
+//                $messageData = [
+//                    'id' => $message->id,
+//                    'direction' => $direction,
+//                    'dateTitle' => $message->created_at->format('Y-m-d'),
+//                    'message' => '<p>Удаленное сообщение</p>',
+//                    'date' => $message->created_at->format('H:i'),
+//                    'msgId' => $request->message_id,
+//                    'reply' => $message->reply_id,
+//                    'reaction' => null,
+//                    'delete' => true,
+//                    'forwarded' => $message->forwarded
+//                ];
+//                $messages[] = $messageData;
+//
+//                $view = View::make('Chatify::layouts.listItem', ['get' => 'messageList', 'messages'=> $messages])->render();
+//
+//                return response()->json([
+//                    'status' => true,
+//                    'message' => $view,
+//                    'message_id' => $request->message_id
+//                ]);
+//            }else{
+//                return response()->json([
+//                    'status' => false,
+//                    'message' => 'Ошибка удаления сообщения'
+//                ]);
+//
+//            }
+//
+//
+//        }else{
+//            return response()->json([
+//                'status' => false,
+//                'message' => 'Сообщение не найдено'
+//            ]);
+//
+//        }
+
+
+
+    }
+
+    public function groupChatInfo(\Illuminate\Http\Request $request){
+
+        $currentUser = Auth::user();
+
+        $chatData = [];
+
+
+        $request_data = $request->all();
+
+        $chat = \App\Models\ChGroup::where('id', $request_data['id'])->first();
+
+        if($chat){
+            $chatData['id'] = $chat->id;
+            $chatData['name'] = $chat->name;
+            $chatData['image'] = $chat->image;
+            $chatData['subscribers'] = $chat->chatUsers()->get()->count() . ' участников';
+            $chatData['description'] = $chat->description;
+            $chatData['view'] = $chat->view ? $chat->view : 0;
+            $chatData['favorite'] = $chat->favorite ? $chat->favorite : 0;
+            $chatData['score'] = $chat->score ? $chat->score : 0;
+            $chatData['settings'] = [];
+            $chatData['userInChat'] = $chat->chatUsers()->where('user_id', Auth::user()->id)->first() ? 'Выйти' : 'Войти';
+
+        }
+
+        $settings = $chat->settings()->where('user_id', Auth::user()->id)->first();
+
+        //На случай, если нет настроек пользователя. Задаем дефолтные значения (не присылать уведомления, не важный канал) (уточнить как нужно)
+        //Настроки сохраняются для текущего пользователя
+        if(!isset($settings) || empty($settings)) {
+            $settings = $chat->settings()->create([
+                'user_id' => Auth::user()->id,
+                'ch_group_id' => $chat->id,
+                'important' => 0,
+                'notifications' => 0
+            ]);
+
+        }
+
+        $chatData['settings'][] = ['name' => 'important', 'title' => 'Важно', 'value' => $settings->important == 1 ?? true];
+        $chatData['settings'][] = ['name' => 'notifications', 'title' => 'Присылать уведомления', 'value' => $settings->notifications == 1 ?? true];
+
+        $data = [];
+        $getRecords = '';
+        foreach($chatData['settings'] as $key=>$setting){
+            $data['title'] = $setting['title'];
+            $data['name'] = $setting['name'];
+            $data['value'] = $setting['value'];
+            $getRecords .= view('Chatify::layouts.listItem', [
+                'get' => 'chat_settings',
+                'setting' => $data
+            ]);
+
+        }
+        $chatData['settings'] = $getRecords;
+
+        return response()->json(['status' => true,'chatInfo' => $chatData]);
+
+
+
+    }
+
+    public function chatSubscribeUnsubscribe(\Illuminate\Http\Request $request){
+
+        $currentUser = Auth::user();
+
+        if($currentUser){
+
+            $chat = \App\Models\ChGroup::where('id', $request->chat_id)->first();
+
+            if(isset($chat) && !empty($chat)){
+
+                $userInChat = $chat->chatUsers()->where('user_id', $currentUser->id)->first();
+                if(isset($userInChat) && !empty($userInChat)){
+
+                    $record = \App\Models\ChGroupUsers::where('user_id', Auth::user()->id)->where('ch_group_id', $chat->id)->first();
+
+                    if(isset($record) && !empty($record)){
+
+                        if($record->delete()){
+
+                            return response()->json([
+                                'status' => true,
+                            ]);
+
+
+                        }else{
+                            return response()->json([
+                                'status' => false,
+                            ]);
+                        }
+
+                    }
+
+
+
+                }
+
+
+            }
+
+
+        }
+
+
+    }
+
+    public function setChatSettings(\Illuminate\Http\Request $request){
+
+        $record = \App\Models\ChGroupSettings::where('user_id', Auth::user()->id)
+            ->where('ch_group_id', $request->chat_id)
+            ->first();
+        if($record){
+            $columnName = $request->name;
+            $newValue = $request->value == 'true' ? 1 : 0;
+            $record->update([$columnName => $newValue]);
+        }
+        $folders = $this->getFolders(Auth::user()->id, $request->folder_id);
+
+        return response()->json([
+            'status' => true,
+            'userFolders' => $folders
+        ]);
+
+
+
+    }
+
+    public function moveChatToFolder(\Illuminate\Http\Request $request){
+
+        $request_data = $request->all();
+
+        $currentUser = Auth::user();
+
+        $userFolder = $currentUser->chatFolders()->where('id', $request_data['folder_id'])->first();
+
+        if($userFolder){
+
+            $userFolder->group_id = implode(', ', $request_data['chat_id']);
+
+            if($userFolder->save()){
+                return response()->json([
+                    'status' => true,
+                    'folder_id' => $userFolder->id
+                ]);
+
+            }else{
+                return response()->json([
+                    'status' => false,
+                    'error' => 'Ошибка сохранения'
+                ]);
+            }
+
+        }
+
+
+
+    }
+
+
 
 
 
